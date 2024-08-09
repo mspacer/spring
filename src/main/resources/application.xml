@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+        <bean id="driver" class="java.lang.String">
+                <constructor-arg value="postgres" type="java.lang.String" /> <!-- type - тип вызываемого конструктора-->
+        </bean>
+
+        <bean name="pool, pool1" class="com.msp.spring.database.pool.ConnectionPool"/>
+
+        <bean id="pool2" class="com.msp.spring.database.pool.ConnectionPool" scope="prototype">
+                <!-- по-умолчанию scope = singleton хранится в контексте. prototype - каждый вызов порождает новый экземпляр. в контексте не хранится  -->
+                <constructor-arg index="0" value ="user1"/> <!-- index - позиция в конструкторе -->
+                <constructor-arg name="poolSize" value="100"/>
+                <constructor-arg>
+                        <list>
+                                <value>list arg 1</value>
+                                <value>list arg 2</value>
+                                <ref bean="driver"/>
+                        </list>
+                </constructor-arg>
+                <constructor-arg>
+                        <null></null>
+                        <!--<map>
+                               <entry key="key1" value="val 1"/>
+                               <entry key="key2" value="val 2"/>
+                               <entry key="key3" value-ref="driver"/>
+                        </map>-->
+                </constructor-arg>
+
+                <property name="properties"> <!-- установка значения чере set-метод -->
+                        <map>
+                                <entry key="key1" value="val 1"/>
+                                <entry key="key2" value="val 2"/>
+                                <entry key="key3" value-ref="driver"/>
+                        </map>
+                </property>
+        </bean>
+
+        <bean name="userRepository" class="com.msp.spring.database.repository.UserRepository">
+                <constructor-arg ref="pool2"/>
+        </bean>
+
+        <bean name="companyRepository" class="com.msp.spring.database.repository.CompanyRepository" factory-method="of">
+                <constructor-arg ref="pool2"/>
+        </bean>
+
+</beans>

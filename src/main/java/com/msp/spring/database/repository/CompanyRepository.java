@@ -10,6 +10,16 @@ public class CompanyRepository {
         this.connectionPool = connectionPool;
     }
 
+    /**
+     * фабричный метод
+     * @param connectionPool
+     * @return
+     */
+    public static CompanyRepository of(ConnectionPool connectionPool) {
+        System.out.println("execute CompanyRepository.of(...)");
+        return new CompanyRepository(connectionPool);
+    }
+
     @Override
     public String toString() {
         return "CompanyRepository class initialized.";
