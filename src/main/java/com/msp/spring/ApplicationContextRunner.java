@@ -3,6 +3,7 @@ package com.msp.spring;
 import com.msp.spring.bfpp.LogBeanFactoryPostProcessor;
 import com.msp.spring.database.pool.ConnectionPool;
 import com.msp.spring.database.repository.CompanyRepository;
+import com.msp.spring.database.repository.CrudRepository;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -38,8 +39,13 @@ public class ApplicationContextRunner {
         ConnectionPool connectionPool2 = context.getBean("pool2", ConnectionPool.class);
         System.out.println(connectionPool2);
 
-        CompanyRepository companyRepository = context.getBean("companyRepository", CompanyRepository.class);
-        System.out.println(companyRepository);
+        // После созадния в TransactionBeanPostProcessors прокси на CompanyRepository ошибка, тк такого типа уже нет в контексте:
+        // Bean named 'companyRepository' is expected to be of type 'com.msp.spring.database.repository.CompanyRepository' but was actually of type 'com.sun.proxy.$Proxy10'
+        // CompanyRepository companyRepository = context.getBean("companyRepository", CompanyRepository.class);
+
+        // используется базовый интерфейс
+        CrudRepository companyRepository = context.getBean("companyRepository", CrudRepository.class);
+        System.out.println(companyRepository.findById(11));
 
         context.close();
     }

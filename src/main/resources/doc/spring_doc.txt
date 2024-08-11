@@ -1,3 +1,4 @@
+1.
 Inversion of Control - принцип программирования, при котором управлением выполнения программы (созданием объектов в частности) занимается фреймворк, а не программист
 Происходит потеря контроля над управлением кодом: фреймворк управляет кодом программиста. Однако программист сосредотачивается над написанием бизнесслогики.
 
@@ -12,3 +13,73 @@ IoC Container-у требуется метаинформация (Bean Definitio
 Существует три реализации метаинформации: XML-based, Annotation-based, Java-based
 
 IoC Container pеализует интерфейсы org.springframework.beans.factory.BeanFactory и org.springframework.context.ApplicationContext
+Для хмл-конфигурации - ClassPathXmlApplicationContext.
+Содержит параметр beanFactory - метаинформация (Bean definition) о всех бирнах в конфигурации (пользовательскии и конфигурационные)
+* beanDefinitionMap - мап бинов, где ключ - полное имя класс либо парамет id/name из конфигурации
+        <bean id="..." name="" ...>
+    Каждый параметр value содержит его метаинформацию
+    constructorArgumentValues - метаинформация о аргументах конструктора (indexArgumentValues, если в конфигурации испольнован индех аргумента в конструкторе
+    или genericArgumentValues, если по имени или типу параметра)
+
+* beanDefinitionNames - список имен бинов
+* singletonObjects - map эекземпляров классов бинов с ключем по имени. Собственно объект, возвращаемый по требованию
+* beanPostProcessors
+
+2.
+Жизненный цикл бинов
+
+Bean definition. Метаинформация о зависимотях и параметрах бинов. Собирается на основе конфигурционных файлов, аннотаций, java-конфигов.
+
+Bean factory post processors
+Бины, реализующие интерфейс BeanFactoryPostProcessor
+Дополнительная обработка метаинформации. Как пример - внедрение информации из properties файлов.
+
+Сортировка бинов из Bean definition.
+Т.к. бины могут зависеть друг от друга, происходит их сортировка и инициализируются первыми независимые от других бины.
+
+Вызов конструкторов бинов либо фабричного метода
+    <bean name="..." class="..." factory-method="of">
+
+Вызов set-методов
+В хмл-конфигурации свойство
+    <property name="properties"> <!-- setProperties(args)  -->
+
+Bean post processors. Before initialization.
+Бины, реализующие интерфейс BeanPostProcessor. Вызываются перед инициализацией бинов
+
+Initialization callbacks
+Инициализация бинов. Осуществляется тремя способами (в порядке приоритета)
+1) аннотация @PostConstruct над методом
+2) метод afterPropertiesSet. Класс должен реализовывать интерфейс InitializingBean
+3) init-метод, прописанный в конфигурации
+    <bean class="..."   init-method="init">
+
+Bean post processors. After initialization.
+
+Beans
+Создание и возвращение бина вызывающему процессу.
+В случае singleton-бина - бин кладется в контекст и существует в единственном экземпляре.
+
+Destruction callbacks
+Для singleton-бинов при закрытии контекста вызывается прописанный в конфигурации метод
+    <bean class="...." scope="singleton"  destroy-method="destroyMethod">
+
+3.
+Bean factory post processors
+ Являются обычными бинами, проходящими тот же жизненный цикл, только в первую очередь.
+ Для этого Spring в списка бинов из конфигурации отбирает их и сортирует в порядке объявления, либо наличии
+ реализуемых интерфейсов Ordered и PriorityOrdered (имеет высший приоритет) и возвращаемого значения из
+ getOrder() (чем меньше число, тем больший приоритет).
+ Определение принадлежности к классу beans post processors
+       BeanFactoryPostProcessor.class.isAssignableFrom(bfpp.getClass())
+
+4.
+Bean post processors (annotationsConfig.png)
+Позволяют управлять конфигурацией бинов посредством обработки аннотаци, что расширяет функционал
+CommonAnnotationBeanPostProcessor - обрабатывает аннотации @PreDestroy, @PostConstruct (initialize callbacks), @Resource
+ApplicationContextAwareProcessor - важный конфигурационный bpp, обрабатывающий бины, реализающие интерфейс Aware (осведомители)
+Эти интерфейсы позволяют внедрить в бин различные конфигурационные объекты, включая контекст.
+CommonAnnotationBeanPostProcessor реализует BeanFactoryAware, позволяющий получить BeanFactory
+    public void setBeanFactory(BeanFactory beanFactory) {...}
+
+С помощью bpp можно создавать обертки (proxy) бинов (AuditingBeanPostProcessors, TransactionBeanPostProcessors).

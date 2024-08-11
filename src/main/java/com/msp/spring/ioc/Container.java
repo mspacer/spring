@@ -15,7 +15,7 @@ public class Container {
     static {
         container.put(ConnectionPool.class, new ConnectionPool());
         container.put(UserRepository.class, new UserRepository(get(ConnectionPool.class)));
-        container.put(CompanyRepository.class, new CompanyRepository(get(ConnectionPool.class)));
+       // container.put(CompanyRepository.class, new CompanyRepository(get(ConnectionPool.class)));
         container.put(UserService.class, new UserService(get(UserRepository.class), get(CompanyRepository.class)));
     }
 

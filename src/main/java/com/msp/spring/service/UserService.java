@@ -13,7 +13,7 @@ public class UserService {
         // UserService управляет созданием XXXRepository и ConnectionPool, что плохо
         // Также могут быть другие классы, требующие эти объекты
         userRepository = new UserRepository(new ConnectionPool());
-        companyRepository = new CompanyRepository(new ConnectionPool());
+        companyRepository = null; //new CompanyRepository(new ConnectionPool());
     }
 
     public UserService(UserRepository userRepository, CompanyRepository companyRepository) {

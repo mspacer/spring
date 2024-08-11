@@ -1,28 +1,42 @@
 package com.msp.spring.database.repository;
 
+import com.msp.spring.bpp.Auditing;
+import com.msp.spring.bpp.InjectBean;
+import com.msp.spring.bpp.Transaction;
+import com.msp.spring.database.entity.Company;
 import com.msp.spring.database.pool.ConnectionPool;
 
-public class CompanyRepository {
+import javax.annotation.PostConstruct;
+import java.util.Optional;
 
-    private final ConnectionPool connectionPool;
+@Transaction
+@Auditing
+public class CompanyRepository implements CrudRepository<Integer, Company> {
 
-    public CompanyRepository(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
+    // инициализация параметра через обработку аннотации посредством bean postprocessor (InjectBeanPostProcessor)
+    @InjectBean
+    private ConnectionPool connectionPool;
+
+    @PostConstruct
+    private void init() {
+        System.out.println("CompanyRepository init");
     }
 
-    /**
-     * фабричный метод
-     * @param connectionPool
-     * @return
-     */
-    public static CompanyRepository of(ConnectionPool connectionPool) {
-        System.out.println("execute CompanyRepository.of(...)");
-        return new CompanyRepository(connectionPool);
-    }
-
+/*
     @Override
     public String toString() {
         return "CompanyRepository class initialized.";
     }
+*/
 
+    @Override
+    public Optional<Company> findById(Integer id) {
+        System.out.println("Company findById " + id);
+        return Optional.of(new Company(10));
+    }
+
+    @Override
+    public void delete(Company entity) {
+        System.out.println("delete company " + entity);
+    }
 }

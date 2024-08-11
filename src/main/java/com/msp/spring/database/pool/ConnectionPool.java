@@ -3,6 +3,8 @@ package com.msp.spring.database.pool;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +45,11 @@ public class ConnectionPool implements InitializingBean, DisposableBean {
      * Initialization callback
      * Первый способ через метод - вызывается при инициализации бина.
      * Может быть приватным, т.е. вызывается через рефлекшен
+     *
+     * Предпочтительный способ использование аннотации
+     * Из трех способов обрабатывается первым
      */
+    @PostConstruct
     private void init() {
         System.out.println("ConnectionPool init() method called.");
     }
@@ -62,7 +68,11 @@ public class ConnectionPool implements InitializingBean, DisposableBean {
      * вызывается только при явном закрытии контекста и только у singleton-бинов(тк хранятся в контексте).
      * Первый способ через метод.
      * Может быть приватным, т.е. вызывается через рефлекшен
+     *
+     * Предпочтительный способ использование аннотации.
+     * Из трех способов обрабатывается первым
      */
+    @PreDestroy
     private void destroyMethod() {
         System.out.println("ConnectionPool destroyMethod() method called.");
     }
