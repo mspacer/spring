@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.Ordered;
+import org.springframework.stereotype.Component;
 
 /**
  * В жизненном цикле бинов beans post processors выполняются в первую очередь.
@@ -14,6 +15,7 @@ import org.springframework.core.Ordered;
  * определение принадлежности к классу beans post processors
  *      BeanFactoryPostProcessor.class.isAssignableFrom(bfpp.getClass())
  */
+@Component
 public class LogBeanFactoryPostProcessor implements BeanFactoryPostProcessor, Ordered {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
