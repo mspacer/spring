@@ -31,10 +31,8 @@ public class ApplicationContextRunner {
         System.out.println(context.getBean("driver"));
 
         // name это alias: context->beanFactory->aliasName
-/*
         ConnectionPool connectionPool = context.getBean("pool", ConnectionPool.class);
         System.out.println(connectionPool);
-*/
 
         ConnectionPool connectionPool2 = context.getBean("pool2", ConnectionPool.class);
         System.out.println(connectionPool2);

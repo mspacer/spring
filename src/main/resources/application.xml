@@ -38,9 +38,7 @@
                 <constructor-arg value="${db.driver}" type="java.lang.String" /> <!-- type - тип вызываемого конструктора-->
         </bean>
 
-<!--
         <bean name="pool, pool1" class="com.msp.spring.database.pool.ConnectionPool"/>
--->
 
         <bean id="pool2" class="com.msp.spring.database.pool.ConnectionPool" scope="singleton">
               <!--init-method="init"
