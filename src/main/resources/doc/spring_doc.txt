@@ -115,3 +115,19 @@ annotation - дефолтное поведение при use-default-filters="t
 scope-resolver - класс определяющий scope бинов - singleton/prototype. По умолчанию в spring-context.xsd - ScopeMetadataResolver и его реализация AnnotationScopeMetadataResolver
 AnnotationScopeMetadataResolver ищет аннотацию Scope.
 помимо парамета value (singleton/prototype) имеет парамер proxyMode, позволяющий создавать прокси из бина
+
+7. Java configuration
+Обрабатывается ConfigurationClassPostProcessor-ром, который ищет классы, помеченные аннотацией @Configuration
+
+Классы конфигурации по умолчанию создаются как прокси (proxyBeanMethods() default true;), поэтому бины, которые создаются
+в методах через new на самом деле создаются только один раз.
+
+@Bean
+параметры initMethod(), destroyMethod() - аналоги @PostConstruct, @PreDestroy
+
+@Profile("...")  - помеченная этой аннотацией сущность, будет создаваться в указанном профайле
+Профайлов может быть несколько. К ним применимы операции ! & |
+Активация профиля проводится чаще всего в файле Properties
+    spring.profiles.active=web,prod
+второй вариант через контекст
+    context.getEnvironment().setActiveProfiles("web", "prod")

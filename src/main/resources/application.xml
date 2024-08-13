@@ -7,32 +7,9 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-<!--
-        context:component-scan содержит в себе
-        <context:annotation-config/>
-        аттрибут annotation-config="true"
-        use-default-filters="true" - использование фильтров. Дефолтное поведение с использованием фильтра
--->
-        <context:component-scan base-package="com.msp.spring" use-default-filters="false" >
-                <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/> <!-- аналог use-default-filters="true"-->
-
-                <!-- CompanyRepository создастся, несмотря на отсутствие аннотации @Repository-->
-<!--
-                <context:include-filter type="assignable" expression="com.msp.spring.database.repository.CrudRepository"/>
--->
-                <context:include-filter type="regex" expression=".+Repository"/>
-
-        </context:component-scan>
-
-        <!-- создает бин PropertySourcesPlaceholderConfigurer-->
-        <context:property-placeholder location="application.properties"/>
-
         <!-- альтернативное создание в java-конфигурации -->
         <bean id="driver" class="java.lang.String">
                 <constructor-arg value="${db.driver}" type="java.lang.String" /> <!-- type - тип вызываемого конструктора-->
         </bean>
-
-        <!--     List<Object> args и  Map<String, Object> properties может быть проинициализировано только из java-конфигурации -->
-        <bean id="pool2" class="com.msp.spring.database.pool.ConnectionPool"/>
 
 </beans>

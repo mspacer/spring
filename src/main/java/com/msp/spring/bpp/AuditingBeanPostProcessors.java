@@ -2,6 +2,7 @@ package com.msp.spring.bpp;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Proxy;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class AuditingBeanPostProcessors implements BeanPostProcessor {
+public class AuditingBeanPostProcessors implements BeanPostProcessor, Ordered {
 
     private final Map<String, Class<?>> auditingBeans = new HashMap<>();
 
@@ -40,5 +41,10 @@ public class AuditingBeanPostProcessors implements BeanPostProcessor {
         }
 
         return bean;
+    }
+
+    @Override
+    public int getOrder() {
+        return 1;
     }
 }

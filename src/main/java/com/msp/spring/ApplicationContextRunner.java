@@ -1,12 +1,17 @@
 package com.msp.spring;
 
 import com.msp.spring.bfpp.LogBeanFactoryPostProcessor;
+import com.msp.spring.config.ApplicationConfiguration;
 import com.msp.spring.database.entity.Company;
 import com.msp.spring.database.pool.ConnectionPool;
 import com.msp.spring.database.repository.CompanyRepository;
 import com.msp.spring.database.repository.CrudRepository;
+import javafx.application.Application;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.lang.annotation.Annotation;
 
 /**
  * <p>
@@ -20,23 +25,15 @@ public class ApplicationContextRunner {
 
     public static void main(String[] args) {
         // информация о бинах в context->beanFactory->beanDefinitionMap (singletonObjects)
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("application.xml");
-
-        /* бины можно получать по базовому классу или интерфейсу
-        Ошибка    available: expected single matching bean but found 3:
-        поскольку объявлено три бина с таким интерфейсом
-         */
-        LogBeanFactoryPostProcessor /*BeanFactoryPostProcessor*/ bfpp = context.getBean(LogBeanFactoryPostProcessor.class/*BeanFactoryPostProcessor.class*/);
-        System.out.println(BeanFactoryPostProcessor.class.isAssignableFrom(bfpp.getClass()));
+        //AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        //profiles
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(ApplicationConfiguration.class);
+        context.getEnvironment().setActiveProfiles(/*"web",*/ "prod");
+        context.refresh();
 
         System.out.println(context.getBean("driver"));
-
-        ConnectionPool connectionPool2 = context.getBean("pool2", ConnectionPool.class);
-        System.out.println(connectionPool2);
-
-        // После созадния в TransactionBeanPostProcessors прокси на CompanyRepository ошибка, тк такого типа уже нет в контексте:
-        // Bean named 'companyRepository' is expected to be of type 'com.msp.spring.database.repository.CompanyRepository' but was actually of type 'com.sun.proxy.$Proxy10'
-        // CompanyRepository companyRepository = context.getBean("companyRepository", CompanyRepository.class);
+        System.out.println(context.getBean("webConfiguration"));
 
         // используется базовый интерфейс
         CrudRepository companyRepository = context.getBean("companyRepository", CrudRepository.class);
