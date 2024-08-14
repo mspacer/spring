@@ -1,17 +1,8 @@
 package com.msp.spring;
 
-import com.msp.spring.bfpp.LogBeanFactoryPostProcessor;
 import com.msp.spring.config.ApplicationConfiguration;
-import com.msp.spring.database.entity.Company;
-import com.msp.spring.database.pool.ConnectionPool;
-import com.msp.spring.database.repository.CompanyRepository;
-import com.msp.spring.database.repository.CrudRepository;
-import javafx.application.Application;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import com.msp.spring.service.CompanyService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.lang.annotation.Annotation;
 
 /**
  * <p>
@@ -32,12 +23,9 @@ public class ApplicationContextRunner {
         context.getEnvironment().setActiveProfiles(/*"web",*/ "prod");
         context.refresh();
 
-        System.out.println(context.getBean("driver"));
-        System.out.println(context.getBean("webConfiguration"));
-
         // используется базовый интерфейс
-        CrudRepository companyRepository = context.getBean("companyRepository", CrudRepository.class);
-        System.out.println(companyRepository.findById(11));
+        CompanyService companyService = context.getBean("companyService", CompanyService.class);
+        System.out.println(companyService.findById(11));
 
         context.close();
     }

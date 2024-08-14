@@ -131,3 +131,15 @@ AnnotationScopeMetadataResolver ищет аннотацию Scope.
     spring.profiles.active=web,prod
 второй вариант через контекст
     context.getEnvironment().setActiveProfiles("web", "prod")
+
+8. Listeners
+Предствляет собой реализацию шаблона Слушатель событий
+Обрабатываются bpp EventListenerMethodProcessor
+Оперирует объектами Event (наследник ApplicationEvent или базового EventObject) - обычный POJO и Listener c произвольным методом acceptXXXX(Event),
+помеченным аннотацией @EventListener
+Неявно на основании каждой аннотации @EventListener будет создан объект типа ApplicationListener
+Отслеживание событий (публикация евентов) осуществляется объектом-наследником интерфейса ApplicationEventPublisher
+вызовом метода publishEvent. В результате из контекста будут вызываться все методы, помеченные аннотацией @EventListener и принимающие
+соответствеющий параметр Event.
+@EventListener имеет параметр condition, в котором на SpEL можно писать условие выполнения метода слушателя.
+
