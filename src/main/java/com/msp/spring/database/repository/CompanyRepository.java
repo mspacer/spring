@@ -4,7 +4,7 @@ import com.msp.spring.bpp.Auditing;
 import com.msp.spring.bpp.Transaction;
 import com.msp.spring.database.entity.Company;
 import com.msp.spring.database.pool.ConnectionPool;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -12,21 +12,16 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
+@RequiredArgsConstructor
 @Transaction
 @Auditing
 public class CompanyRepository implements CrudRepository<Integer, Company> {
 
     private final ConnectionPool connectionPool;
     private final List<ConnectionPool> pools;
-    private final int poolSize;
-
-    public CompanyRepository(ConnectionPool connectionPool,
-                             List<ConnectionPool> pools,
-                             @Value("${db.pool.size}") int poolSize) {
-        this.connectionPool = connectionPool;
-        this.pools = pools;
-        this.poolSize = poolSize;
-    }
+    @Value("17")
+    private final Integer poolSize;
 
     @PostConstruct
     private void init() {
@@ -43,4 +38,10 @@ public class CompanyRepository implements CrudRepository<Integer, Company> {
     public void delete(Company entity) {
         System.out.println("delete company " + entity);
     }
+
+    @Override
+    public String toString() {
+        return "CompanyRepository class initialized.";
+    }
+
 }

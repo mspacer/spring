@@ -1,32 +1,26 @@
 package com.msp.spring;
 
-import com.msp.spring.config.ApplicationConfiguration;
 import com.msp.spring.service.CompanyService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.SpringProperties;
 
-/**
- * <p>
- *    DI внедряет зависимости тремя способами
- *    <p>- параметры конструктора</p>
- *    <p>- параметры статического метода инициолизации (фабричный метод)</p>
- *    <p>- свойства объекта(set* методы)</p>
- * </p>
- */
+@SpringBootApplication
 public class ApplicationContextRunner {
 
     public static void main(String[] args) {
-        // информация о бинах в context->beanFactory->beanDefinitionMap (singletonObjects)
-        //AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
-        //profiles
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(ApplicationConfiguration.class);
-        context.getEnvironment().setActiveProfiles(/*"web",*/ "prod");
-        context.refresh();
-
-        // используется базовый интерфейс
+        //ConfigurableApplicationContext context = SpringApplication.run(ApplicationContextRunner.class, args);
+        SpringApplication app = new SpringApplication(ApplicationContextRunner.class);
+        app.setAdditionalProfiles("prod");
+        app.setBannerMode(Banner.Mode.OFF);
+        ConfigurableApplicationContext context =app.run(args);
         CompanyService companyService = context.getBean("companyService", CompanyService.class);
-        System.out.println(companyService.findById(11));
+        System.out.println(companyService);
+        System.out.println(companyService.findById(123));
 
+        System.out.println(SpringProperties.getProperty("test.message"));
         context.close();
     }
 

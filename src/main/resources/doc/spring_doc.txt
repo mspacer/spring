@@ -143,3 +143,42 @@ AnnotationScopeMetadataResolver ищет аннотацию Scope.
 соответствеющий параметр Event.
 @EventListener имеет параметр condition, в котором на SpEL можно писать условие выполнения метода слушателя.
 
+9. Spring boot
+Spring -  альтернатива Java EE и EJB-бинам, фреймворк, реализующий по-своему Java EE стандарт.
+Состоит из набора независимых модулей -
+core — базовый функционал, реализующий понятия IoC (inversion of control) и DI (dependency injection);
+AOP — Aspect-Oriented Programming — аспектно-ориентированое программирование, направленное на реализацию сквозной логики;
+MVC и WebFlux — фреймворки для веб взаимодествия;
+JDBC, ORM — технологии взаимодействия с базами данных;
+Test — функционал для прозрачного, несложного тестирования данных Spring контейнера;
+SpEL — Spring Expression Language — язык выражений Spring;
+и т.д.
+Каждый модуль - набор отдельных библиотек и своей конфигурации в приложении
+
+Spring boot через Spring boot starters предоставляет возможность автоконфигурации каждого модуля и
+решает проблему совместимости библиотек.
+Версия Spring boot-а предоставляет pom, в котором указаны все зависимости библиотек, которые были протестированы
+на совместимость в данной версии (Dependency management механизм)
+
+@Conditional - позволяет динамически подключать конфигурацию, модуль, бин на основе написанного условия.
+@Profile - пример реализации
+
+Класс, запускающий приложение, должен быть помечен аннотацией @SpringBootApplication и быть единственным.
+Эта аннотация помечается аннотациями
+ - @SpringBootConfiguration, также единственная
+ - @ComponentScan - автоматически сканирует все пакеты, которые входят в пакет с главным классом приложения
+
+ application.properties - зарезервированное имя файла свойств, поэтому в конфигурации нет необходимости явно
+ вызывать @PropertySource("classpath:application.properties")
+
+spring.properties - еще один файл свойств, который читает специальным классом SpringProperties
+
+Существует 14 вариантов передачи свойсв в приложение
+https://docs.spring.io/spring-boot/reference/features/external-config.html
+в зависимости от источника свойства могут переопределятся
+application-{profile}.properties - свойства, связанные с профайлом
+
+VM: -Ddb.username=wpsadmin2
+command args: --db.username=wpsadmin2
+Envirement: db.username=wpsadmin2
+

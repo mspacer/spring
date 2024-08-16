@@ -30,6 +30,10 @@ public class AuditingBeanPostProcessors implements BeanPostProcessor, Ordered {
         if (originalClass != null) {
             return Proxy.newProxyInstance(originalClass.getClassLoader(), originalClass.getInterfaces(),
                     (proxy, method, args) ->  {
+                        if ("toString".equals(method.getName())) {
+                            return method.invoke(bean, args);
+                        }
+
                         long nanoTime = System.nanoTime();
                         try {
                             System.out.println("Start auditing: " + nanoTime);
