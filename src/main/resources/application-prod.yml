@@ -1,0 +1,9 @@
+db:
+  username: Oracle
+  password: pass
+  pool:
+    size: 5
+    timeout: 23
+  driver: OracleDriver
+  url: oracle:1251
+  hosts: localhost,127.0.0.1

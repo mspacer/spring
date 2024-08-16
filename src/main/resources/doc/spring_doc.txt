@@ -182,3 +182,12 @@ VM: -Ddb.username=wpsadmin2
 command args: --db.username=wpsadmin2
 Envirement: db.username=wpsadmin2
 
+10. Yaml - yet another markup language
+хорошо работает со сложными структурами (List, Map), позволяет создавать Java объекты
+Обрабатывается YamlPropertiesFactoryBean
+Не рекомендуется одновременное использование application.properties и application.yaml (*.yml)
+Названия полей в Java объекте должны быть такими же как в файле.
+Объект должен иметь конструктор без параметров и get/set методы, т.к. заполнение значениями происходит через Reflection
+Маппинг файла на объект
+- создание бина с аннотацией @ConfigurationProperties
+- @ConfigurationProperties у бина + @ConfigurationPropertiesScan у класса приложения

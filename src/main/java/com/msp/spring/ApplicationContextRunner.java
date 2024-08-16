@@ -4,10 +4,12 @@ import com.msp.spring.service.CompanyService;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.SpringProperties;
 
 @SpringBootApplication
+@ConfigurationPropertiesScan // ищет все классы с аннотацией ConfigurationProperties
 public class ApplicationContextRunner {
 
     public static void main(String[] args) {

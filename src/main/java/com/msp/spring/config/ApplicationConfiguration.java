@@ -4,6 +4,7 @@ import com.msp.spring.database.pool.ConnectionPool;
 import com.msp.web.config.WebConfiguration;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,14 @@ public class ApplicationConfiguration implements ApplicationContextAware {
         //не работает поскольку в конструкторе стоят @Value
         return new ConnectionPool("test-name", poolSize + 10);
     }
+
+/*
+    @Bean
+    @ConfigurationProperties("db")
+    public DatabaseProperties databaseProperties() {
+        return new DatabaseProperties();
+    }
+*/
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
