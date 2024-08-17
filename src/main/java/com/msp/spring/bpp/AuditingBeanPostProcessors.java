@@ -1,5 +1,6 @@
 package com.msp.spring.bpp;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class AuditingBeanPostProcessors implements BeanPostProcessor, Ordered {
 
     private final Map<String, Class<?>> auditingBeans = new HashMap<>();
@@ -36,10 +38,10 @@ public class AuditingBeanPostProcessors implements BeanPostProcessor, Ordered {
 
                         long nanoTime = System.nanoTime();
                         try {
-                            System.out.println("Start auditing: " + nanoTime);
+                            log.info("Start auditing: " + nanoTime);
                             return method.invoke(bean, args);
                         } finally {
-                            System.out.println("Stop auditing: " + (System.nanoTime() - nanoTime));
+                            log.info("Stop auditing: " + (System.nanoTime() - nanoTime));
                         }
                     });
         }

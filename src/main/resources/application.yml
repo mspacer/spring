@@ -19,3 +19,12 @@ db:
     - size: 3
       timeout: 3
 
+logging:
+  level:
+    root: warn
+    com.msp.spring: info
+  file:
+    name: spring.log
+    path: /
+  pattern:
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} : %msg%n"

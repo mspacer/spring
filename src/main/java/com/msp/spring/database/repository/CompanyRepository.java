@@ -5,6 +5,7 @@ import com.msp.spring.bpp.Transaction;
 import com.msp.spring.database.entity.Company;
 import com.msp.spring.database.pool.ConnectionPool;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transaction
 @Auditing
+@Slf4j
 public class CompanyRepository implements CrudRepository<Integer, Company> {
 
     private final ConnectionPool connectionPool;
@@ -25,18 +27,18 @@ public class CompanyRepository implements CrudRepository<Integer, Company> {
 
     @PostConstruct
     private void init() {
-        System.out.println("CompanyRepository init");
+        log.info("CompanyRepository init");
     }
 
     @Override
     public Optional<Company> findById(Integer id) {
-        System.out.println("Company findById " + id);
+        log.info("Company findById " + id);
         return Optional.of(new Company(10));
     }
 
     @Override
     public void delete(Company entity) {
-        System.out.println("delete company " + entity);
+        log.info("delete company " + entity);
     }
 
     @Override

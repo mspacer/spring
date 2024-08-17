@@ -1,5 +1,6 @@
 package com.msp.spring.bfpp;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -16,10 +17,11 @@ import org.springframework.stereotype.Component;
  *      BeanFactoryPostProcessor.class.isAssignableFrom(bfpp.getClass())
  */
 @Component
+@Slf4j
 public class LogBeanFactoryPostProcessor implements BeanFactoryPostProcessor, Ordered {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        System.out.println("execute LogBeanFactoryPostProcessor.postProcessBeanFactory()");
+        log.info("execute LogBeanFactoryPostProcessor.postProcessBeanFactory()");
     }
 
     @Override

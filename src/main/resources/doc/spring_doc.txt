@@ -191,3 +191,8 @@ Envirement: db.username=wpsadmin2
 Маппинг файла на объект
 - создание бина с аннотацией @ConfigurationProperties
 - @ConfigurationProperties у бина + @ConfigurationPropertiesScan у класса приложения
+
+11. Logging
+По умоляанию - Logback
+Дефолтные настройки логирования лежат в base.xml
+В пропертях можно донастраивать или переопределять параметры - параметр logging

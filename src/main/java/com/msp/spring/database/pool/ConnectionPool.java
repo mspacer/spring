@@ -2,6 +2,7 @@ package com.msp.spring.database.pool;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import javax.annotation.PreDestroy;
 @Component
 @RequiredArgsConstructor
 @ToString
+@Slf4j
 public class ConnectionPool {
 
     /*
@@ -24,12 +26,12 @@ public class ConnectionPool {
 
     @PostConstruct
     private void init() {
-        System.out.println("ConnectionPool init() method called.");
+        log.info("ConnectionPool init() method called.");
     }
 
     @PreDestroy
     private void destroyMethod() {
-        System.out.println("ConnectionPool destroyMethod() method called.");
+        log.info("ConnectionPool destroyMethod() method called.");
     }
 
 }

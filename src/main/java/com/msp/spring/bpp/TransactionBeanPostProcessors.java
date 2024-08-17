@@ -1,5 +1,6 @@
 package com.msp.spring.bpp;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class TransactionBeanPostProcessors implements BeanPostProcessor, Ordered {
 
     private final Map<String, Class<?>> transactionsBeans = new HashMap<>();
@@ -26,10 +28,10 @@ public class TransactionBeanPostProcessors implements BeanPostProcessor, Ordered
             return Proxy.newProxyInstance(bean.getClass().getClassLoader(), bean.getClass().getInterfaces(),
                     (proxy, method, args) ->  {
                         try {
-                            System.out.println("Open transaction");
+                            log.info("Open transaction");
                             return method.invoke(args);
                         } finally {
-                            System.out.println("Close transaction");
+                            log.info("Close transaction");
                         }
                     });
         }
@@ -59,10 +61,10 @@ public class TransactionBeanPostProcessors implements BeanPostProcessor, Ordered
                         }
 
                         try {
-                            System.out.println("Open transaction");
+                            log.info("Open transaction");
                             return method.invoke(bean, args);
                         } finally {
-                            System.out.println("Close transaction");
+                            log.info("Close transaction");
                         }
                     });
         }
