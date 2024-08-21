@@ -11,8 +11,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest
+@SpringBootTest(classes = TestApplicationRunner.class)
 @ActiveProfiles("test")
-
 public @interface IT {
 }

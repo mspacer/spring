@@ -222,3 +222,11 @@ Envirement: db.username=wpsadmin2
 
 либо прописываем в spring.properties свойство (https://docs.spring.io/spring-framework/reference/appendix.html)
     spring.test.constructor.autowire.modе=all
+
+13. Testing cash context
+Если каждый тест использует разный набор аннотаций или переопределяет бины (например Mock), то каждый
+тест имеет отличную от другого конфигурацию и, следовательно, будет создаваться свой контекст.
+Поднятие контекста тяжеловесная операция и без необходимости стоит избегать
+
+@TestConfiguration ищет @SpringBootApplication, поэтому ее можно использовать в
+    @SpringBootTest(classes = TestApplicationRunner.class)
