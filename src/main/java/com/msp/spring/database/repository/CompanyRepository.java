@@ -33,7 +33,7 @@ public class CompanyRepository implements CrudRepository<Integer, Company> {
     @Override
     public Optional<Company> findById(Integer id) {
         log.info("Company findById " + id);
-        return Optional.of(new Company(10));
+        return Optional.of(new Company(id));
     }
 
     @Override

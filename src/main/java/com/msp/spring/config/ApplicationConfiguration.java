@@ -30,7 +30,7 @@ public class ApplicationConfiguration implements ApplicationContextAware {
     @Bean
     public ConnectionPool pool(@Value("${db.pool.size}") int poolSize) {
         //не работает поскольку в конструкторе стоят @Value
-        return new ConnectionPool("test-name", poolSize + 10);
+        return new ConnectionPool("test-name", "testPwd",poolSize + 10);
     }
 
 /*

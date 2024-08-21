@@ -21,6 +21,8 @@ public class ConnectionPool {
      */
     @Value("${db.username}")
     private final String userName;
+    @Value("${db.password}")
+    private final String password;
     @Value("${db.pool.size}")
     private final Integer poolSize;
 

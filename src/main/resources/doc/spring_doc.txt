@@ -196,3 +196,29 @@ Envirement: db.username=wpsadmin2
 По умоляанию - Logback
 Дефолтные настройки логирования лежат в base.xml
 В пропертях можно донастраивать или переопределять параметры - параметр logging
+
+12. Testing
+Для unit тестов необходим только MockitoExtension
+Для интегрейшен тестов необходим контекст приложения для инициализации бинов и внедрения зависимостей
+Для этого необходимо указать главный класс приложения (@SpringBootApplication), в котором происходит конфигурирования
+
+Тесты не работают с yaml файлами. По умолчанюи только с *.properties
+Поэтому, если какой-то @Component для инициализации требует проперти - в тестах не подымится ApplicationContext
+Будет ошибка создания бина
+    Error creating bean with name 'connectionPool' defined in file ....\ConnectionPool.class]:
+    Unexpected exception during bean creation; nested exception is java.lang.IllegalArgumentException:
+    Could not resolve placeholder 'db.username' in value "${db.username}"
+
+для решения проблемы нужно использовать ConfigDataApplicationContextInitializer, который вызывает ConfigDataEnvironmentPostProcessor,
+который в свою очередь обрабатывает все property в classpath
+
+Все вышесказанное делает автоматически аннотация @SpringBootTest
+
+@ActiveProfiles("test") - активирует тестовый профайл, соответственно будет считываться  application-test.yml,
+свойства в котором будут перезаписывать application.yml
+
+Вместо @Autowired для полей нужен конструктор. Для этого используется аннотация
+    @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+
+либо прописываем в spring.properties свойство (https://docs.spring.io/spring-framework/reference/appendix.html)
+    spring.test.constructor.autowire.modе=all

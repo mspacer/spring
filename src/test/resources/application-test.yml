@@ -1,0 +1,14 @@
+db:
+  username: test
+  password: passtest
+
+
+logging:
+  level:
+    root: warn
+    com.msp.spring: info
+  file:
+    name: spring-test.log
+    path: /
+  pattern:
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} : %msg%n"
