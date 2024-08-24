@@ -35,7 +35,7 @@ class CompanyServiceTest {
 
     @Test
     void findById() {
-        Optional<Company> company = Optional.of(new Company(1));
+        Optional<Company> company = Optional.of(new Company(1, "", null));
         CompanyReadDto expectedDto = new CompanyReadDto(1);
         Mockito.doReturn(company).when(companyRepository).findById(1);
 

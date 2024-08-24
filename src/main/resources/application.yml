@@ -19,9 +19,21 @@ db:
     - size: 3
       timeout: 3
 
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties.hibernate:
+      show_sql: true
+      format_sql: true
+      hbm2ddl.auto: validate
+
 logging:
   level:
-    root: warn
+    root: info
     com.msp.spring: info
   file:
     name: spring.log

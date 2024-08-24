@@ -224,9 +224,40 @@ Envirement: db.username=wpsadmin2
     spring.test.constructor.autowire.modе=all
 
 13. Testing cash context
+interface TestContext - контекст выполнения тестов, точка входа в которые TestContextManager
+
 Если каждый тест использует разный набор аннотаций или переопределяет бины (например Mock), то каждый
 тест имеет отличную от другого конфигурацию и, следовательно, будет создаваться свой контекст.
 Поднятие контекста тяжеловесная операция и без необходимости стоит избегать
 
 @TestConfiguration ищет @SpringBootApplication, поэтому ее можно использовать в
     @SpringBootTest(classes = TestApplicationRunner.class)
+
+14. Database Postgres
+postgres/password
+
+Для работы с BD spring использует Hibernate (реализация JPA).
+Автоконфигурация JPA осуществляется JpaBaseConfiguration и его наследник HibernateJpaConfiguration
+JpaBaseConfiguration также конфигурирует транзакции
+Свойства Hibernate: AvailableSettings. В спринге - HibernateProperties (в конфигурационных файлах spring.jpa.hibernate)
+
+Hibernate не предоставляет слоя Repository, т.е. DAO реализовывается самостоятельно.
+Нет встроенной обработки транзакция. Транзакция открывается и закрывается вручную.
+
+Если бы Entity лежали в другом gradle-модуле, потребовалсь бы аннотация для ApplicationContextRunner
+    @EntityScan("com.msp.spring.entity")
+
+15. Трансакции
+
+В тестах обработчик транзакций TransactionalTestExecutionListener из starter-test.
+По умольчанию после выполниеня транзакционного метода, происходит Rollback. Для сохранения изменений на методе(классе)
+нужно поставить аннотацию @Commit
+
+Для не-spring boot приложений, в которых отстутствует авто конфигурация, механизм транзакций включается аннотацией
+  @EnableTransactionManagement
+
+трансакции работают только над public методами
+
+Классы, помеченные @Transactional, являются прокси-слассами, созданными cjlib
+
+В случае Propagation.REQUIRES_NEW открывается новая сессия и соединение с БД

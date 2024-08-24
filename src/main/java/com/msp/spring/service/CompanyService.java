@@ -10,12 +10,14 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @ToString
+@Transactional
 public class CompanyService {
 
     private final CrudRepository<Integer, Company> companyRepository;
