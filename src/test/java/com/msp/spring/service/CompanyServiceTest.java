@@ -2,22 +2,20 @@ package com.msp.spring.service;
 
 import com.msp.spring.database.dto.CompanyReadDto;
 import com.msp.spring.database.entity.Company;
-import com.msp.spring.database.repository.CrudRepository;
+import com.msp.spring.database.repository.CompanyRepository;
 import com.msp.spring.listener.entity.EntityEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.Extensions;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith({
         MockitoExtension.class
@@ -25,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CompanyServiceTest {
 
     @Mock
-    private CrudRepository<Integer, Company> companyRepository;
+    private CompanyRepository companyRepository;
     @Mock
     private ApplicationEventPublisher publisher;
     @Mock

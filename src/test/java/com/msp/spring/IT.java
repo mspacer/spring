@@ -1,6 +1,5 @@
 package com.msp.spring;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;

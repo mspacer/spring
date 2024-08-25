@@ -247,6 +247,10 @@ Hibernate не предоставляет слоя Repository, т.е. DAO реа
 Если бы Entity лежали в другом gradle-модуле, потребовалсь бы аннотация для ApplicationContextRunner
     @EntityScan("com.msp.spring.entity")
 
+пример получения PersistenceContext, где можно посмотреть Entity в кеше
+    final org.hibernate.engine.spi.SessionImplementor session = entityManager.unwrap( org.hibernate.engine.spi.SessionImplementor.class );
+    final org.hibernate.engine.spi.PersistenceContext pc = session.getPersistenceContext();
+
 15. Трансакции
 
 В тестах обработчик транзакций TransactionalTestExecutionListener из starter-test.
@@ -261,3 +265,27 @@ Hibernate не предоставляет слоя Repository, т.е. DAO реа
 Классы, помеченные @Transactional, являются прокси-слассами, созданными cjlib
 
 В случае Propagation.REQUIRES_NEW открывается новая сессия и соединение с БД
+
+16. Repository
+
+Дефолтная реализация DAO. JpaRepositoriesAutoConfiguration ищет интерфейсы-наследниеи Repository и генерирует прокси классы
+(при этом нет необходимости помечать класс аннотацией @Repository)
+Для не-spring boot приложений создание слоя repository включается аннотацией @EnableJpaRepositories
+Не поддерживают операцию update
+
+Наследники Repository (напр. CrudRepository, JpaRepository) уже реализуют набор базовых методов.
+Базовая реализация - класс SimpleJpaRepository
+Базовый класс запросов, которые строятся Repository - RepositoryQuery
+Нааследники - PartTreeJpaQuery, NamedQuery
+https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html
+
+PartTreeJpaQuery в связке с PartTree парсит названия методов и строиз запрос к базе.
+
+NamedQuery - запрос строится на HQL (Hibernate query language) в аннотации @NamedQuery либо в xml
+    <named-query name="..."><query>...</query></named-query>
+Имеет приоритет над  PartTreeJpaQuery, если название метода PartTreeJpaQuery и имени запроса в NamedQuery совпадают.
+    @NamedQuery(name = "Company.findByName", query = "...")
+соответствует методу findByName(String name) в CompanyRepository
+
+NativeJpaQuery - использует аннотацию @Query над методом для выполнения как HQL так и нативных (nativeQuery = true) запросов.
+Имеет приоритет над NamedQuery

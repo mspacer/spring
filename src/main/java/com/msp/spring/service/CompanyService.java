@@ -1,8 +1,7 @@
 package com.msp.spring.service;
 
 import com.msp.spring.database.dto.CompanyReadDto;
-import com.msp.spring.database.entity.Company;
-import com.msp.spring.database.repository.CrudRepository;
+import com.msp.spring.database.repository.CompanyRepository;
 import com.msp.spring.listener.entity.AccessType;
 import com.msp.spring.listener.entity.EntityEvent;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.Optional;
 @Transactional
 public class CompanyService {
 
-    private final CrudRepository<Integer, Company> companyRepository;
+    private final CompanyRepository companyRepository;
     private final ApplicationEventPublisher publisher;
 
     @Setter

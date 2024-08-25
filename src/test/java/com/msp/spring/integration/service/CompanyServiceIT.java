@@ -1,30 +1,12 @@
 package com.msp.spring.integration.service;
 
-import com.msp.spring.ApplicationContextRunner;
 import com.msp.spring.IT;
 import com.msp.spring.config.DatabaseProperties;
 import com.msp.spring.database.dto.CompanyReadDto;
-import com.msp.spring.database.entity.Company;
-import com.msp.spring.database.repository.CrudRepository;
-import com.msp.spring.listener.entity.EntityEvent;
 import com.msp.spring.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestConstructor;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Optional;
 

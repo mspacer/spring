@@ -3,7 +3,9 @@ package com.msp.spring.database.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Access;
 import javax.persistence.Column;
@@ -28,6 +30,8 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@ToString(exclude = "usersChats")
+@EqualsAndHashCode(of = "userName")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
