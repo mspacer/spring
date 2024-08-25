@@ -1,7 +1,9 @@
 package com.msp.spring.database.repository;
 
+import com.msp.spring.database.entity.Role;
 import com.msp.spring.database.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -22,5 +24,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             nativeQuery = true
             )
     List<User> findAllByName(String firstName);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = false)
+    @Query("update User u " +
+           "set u.role = :role " +
+           "where u.id in (:ids)")
+    int updateRole(Role role, Long ... ids);
 
 }
