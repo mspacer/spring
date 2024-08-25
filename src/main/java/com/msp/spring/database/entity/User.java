@@ -51,9 +51,9 @@ public class User implements BaseEntity<Long> {
     private String lastName;
 
     @Column(name = "birth_date")
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
-    //private LocalDate birthDate;
+    //@Temporal(TemporalType.DATE)
+    //private Date birthDate;
+    private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
     private Role role;
