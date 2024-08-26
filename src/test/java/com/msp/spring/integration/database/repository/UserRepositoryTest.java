@@ -52,7 +52,7 @@ public class UserRepositoryTest {
         //Slice<User> allBy = userRepository.findAllBy(pageable);
         Page<User> allBy = userRepository.findAllBy(pageable);
 
-        allBy.forEach(user -> log.debug("user id = {}", user.getId()));
+        allBy.forEach(user -> log.debug("user company = {}", user.getCompany().getName()));
 
         //Slice/Page позволяет получить следующую страницу (offset)
         log.debug("number: {}, numberOfElements: {}", allBy.getNumber(), allBy.getNumberOfElements());
