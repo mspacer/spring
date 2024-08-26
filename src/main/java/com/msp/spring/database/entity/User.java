@@ -65,4 +65,5 @@ public class User implements BaseEntity<Long> {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Builder.Default
     private List<UsersChat> usersChats = new ArrayList<>();
+
 }

@@ -1,6 +1,9 @@
 package com.msp.spring.integration.database.repository;
 
 import com.msp.spring.IT;
+import com.msp.spring.database.dto.IPersonalInfo;
+import com.msp.spring.database.dto.PersonalInfo;
+import com.msp.spring.database.dto.PersonalInfo2;
 import com.msp.spring.database.entity.Role;
 import com.msp.spring.database.entity.User;
 import com.msp.spring.database.repository.UserRepository;
@@ -44,6 +47,19 @@ public class UserRepositoryTest {
         pc = session.getPersistenceContext();
     }
 
+    @Test
+    void checkProjection() {
+        //List<PersonalInfo> users = userRepository.findAllByCompanyId(1);
+        List<PersonalInfo> users = userRepository.findAllByCompanyId(1, PersonalInfo.class);
+        assertThat(users).isNotEmpty();
+
+        List<PersonalInfo2> users2 = userRepository.findAllByCompanyId(2, PersonalInfo2.class);
+        assertThat(users2).isNotEmpty();
+
+        List<IPersonalInfo> users3 = userRepository.findUsersByCompanyId(3);
+        assertThat(users3).isNotEmpty();
+
+    }
 
     @Test
     void checkPageable() {

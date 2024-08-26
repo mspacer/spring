@@ -1,5 +1,7 @@
 package com.msp.spring.database.repository;
 
+import com.msp.spring.database.dto.IPersonalInfo;
+import com.msp.spring.database.dto.PersonalInfo;
 import com.msp.spring.database.entity.Role;
 import com.msp.spring.database.entity.User;
 import org.springframework.data.domain.Page;
@@ -58,4 +60,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
            countQuery = "select count(distinct u.userName) from User u"     )
 */
     Page<User> findAllBy(Pageable pageable);
+
+    List<PersonalInfo> findAllByCompanyId(Integer companyId);
+
+    <T> List<T> findAllByCompanyId(Integer companyId, Class<T> clazz);
+
+    // u.birth_date birthDate обязательно, тк метод - getBirthDate
+    @Query(nativeQuery = true,
+           value="SELECT u.firstname, u.lastname, u.birth_date birthDate " +
+                 "FROM users u " +
+                 "WHERE u.company_id = :companyId")
+    List<IPersonalInfo> findUsersByCompanyId(Integer companyId);
+
 }
