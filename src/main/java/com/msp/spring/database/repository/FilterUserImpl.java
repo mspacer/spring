@@ -2,21 +2,37 @@ package com.msp.spring.database.repository;
 
 import com.msp.spring.database.dto.UserFilter;
 import com.msp.spring.database.entity.User;
+import com.msp.spring.database.repository.predicate.QPredicates;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.msp.spring.database.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class FilterUserImpl implements FilterUser {
 
     private final EntityManager entityManager;
 
+    @Override
+    public List<User> findAllByFilter(UserFilter filter) {
+        Predicate predicate = QPredicates.builder()
+                .add(filter.getFirstName(), user.firstName::like)
+                .add(filter.getLastName(), user.lastName::containsIgnoreCase)
+                .add(filter.getBirthDate(), user.birthDate::before)
+                .build();
+
+        return new JPAQuery<User>(entityManager)
+                .select(user)
+                .from(user)
+                .where(predicate)
+                .fetch();
+    }
+
+/*
     @Override
     public List<User> findAllByFilter(UserFilter filter) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -41,4 +57,5 @@ public class FilterUserImpl implements FilterUser {
 
         return entityManager.createQuery(query).getResultList();
     }
+*/
 }

@@ -8,6 +8,8 @@ import com.msp.spring.database.dto.UserFilter;
 import com.msp.spring.database.entity.Role;
 import com.msp.spring.database.entity.User;
 import com.msp.spring.database.repository.UserRepository;
+import com.msp.spring.database.repository.predicate.QPredicates;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.spi.PersistenceContext;
@@ -29,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.msp.spring.database.entity.QUser.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -68,11 +71,23 @@ public class UserRepositoryTest {
 
     @Test
     void checkCustomRepositoryImplementation() {
-        UserFilter filter = new UserFilter(null, "%ov%", LocalDate.now());
+        UserFilter filter = new UserFilter("%et%", "ov", LocalDate.now());
 
         List<User> allByFilter = userRepository.findAllByFilter(filter);
 
         assertThat(allByFilter).isNotEmpty();
+
+        Predicate predicate = QPredicates.builder()
+                .add("%et%", user.firstName::like)
+                .add("ov", user.lastName::containsIgnoreCase)
+                .add(LocalDate.now(), user.birthDate::before)
+                .build();
+
+        // из QuerydslPredicateExecutor
+        Iterable<User> users = userRepository.findAll(predicate);
+
+        assertThat(users).isNotEmpty();
+
     }
 
     @Test
