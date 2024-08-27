@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,14 @@ public class UserRepositoryTest {
     void init() {
         final org.hibernate.engine.spi.SessionImplementor session = entityManager.unwrap(org.hibernate.engine.spi.SessionImplementor.class);
         pc = session.getPersistenceContext();
+    }
+
+    @Test
+    void checkAuditing() {
+        User user = userRepository.findById(1L).get();
+        user.setBirthDate(user.getBirthDate().plusYears(1l));
+        entityManager.flush();
+        System.out.println();
     }
 
     @Test

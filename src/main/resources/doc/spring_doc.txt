@@ -326,3 +326,15 @@ Projection с интерфейсами может использовать SpEL
 Задается в конфигурации аннотацией EnableJpaRepositories (JpaRepositoriesAutoConfiguration -> JpaRepositoriesRegistrar).
 Можно переопределить, задав эту аннотацию у конфигурационного файла.
 Repository наследует этот интерфейс.
+
+21. Auditing
+Механизм отслеживания кто и когда изменил запись. В Hibernate и spring есть встроенная поддержка.
+Для этого в аннотации @EntityListeners указвается класс аудита. В Spring встроенный.
+    @EntityListeners(AuditingEntityListener.class)
+
+Поля, подлежащие изменению, должны быть помеченны аннотациями @CreatedDate, @LastModifiedDate, @CreatedBy, @LastModifiedBy
+
+Включение механизма аудита осуществляется аннотацией @EnableJpaAuditing над конфигурационным классом
+
+Для @CreatedBy, @LastModifiedBy необходимо предоставить провайдера, который установит в эти поля нужные значения.
+Для этого в EnableJpaAuditing есть параметр auditorAwareRef - имя бина, возвращающий AuditorAware<T> нужного типа.
