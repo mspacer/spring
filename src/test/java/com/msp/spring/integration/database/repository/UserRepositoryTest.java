@@ -19,6 +19,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.history.Revisions;
+import org.springframework.test.annotation.Commit;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -50,6 +52,13 @@ public class UserRepositoryTest {
     }
 
     @Test
+    void checkRevision() {
+        Revisions<Integer, User> revisions = userRepository.findRevisions(1l);
+        System.out.println();
+    }
+
+    @Test
+    @Commit
     void checkAuditing() {
         User user = userRepository.findById(1L).get();
         user.setBirthDate(user.getBirthDate().plusYears(1l));

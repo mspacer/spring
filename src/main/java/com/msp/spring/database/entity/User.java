@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.Access;
 import javax.persistence.Column;
@@ -29,6 +32,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Data
 @ToString(exclude = "usersChats")
 @EqualsAndHashCode(of = "userName")
@@ -64,6 +68,7 @@ public class User extends AuditingEntity<Long> {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Builder.Default
+    @NotAudited
     private List<UsersChat> usersChats = new ArrayList<>();
 
 }
