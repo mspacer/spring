@@ -4,6 +4,7 @@ import com.msp.spring.IT;
 import com.msp.spring.database.dto.IPersonalInfo;
 import com.msp.spring.database.dto.PersonalInfo;
 import com.msp.spring.database.dto.PersonalInfo2;
+import com.msp.spring.database.dto.UserFilter;
 import com.msp.spring.database.entity.Role;
 import com.msp.spring.database.entity.User;
 import com.msp.spring.database.repository.UserRepository;
@@ -45,6 +46,15 @@ public class UserRepositoryTest {
     void init() {
         final org.hibernate.engine.spi.SessionImplementor session = entityManager.unwrap(org.hibernate.engine.spi.SessionImplementor.class);
         pc = session.getPersistenceContext();
+    }
+
+    @Test
+    void checkCustomRepositoryImplementation() {
+        UserFilter filter = new UserFilter(null, "%ov%", LocalDate.now());
+
+        List<User> allByFilter = userRepository.findAllByFilter(filter);
+
+        assertThat(allByFilter).isNotEmpty();
     }
 
     @Test

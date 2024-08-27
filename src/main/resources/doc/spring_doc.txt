@@ -319,3 +319,10 @@ Slice/Page - результат. Отличие - Page расширяет Slice 
 В обоих случаях поля/методы должны совпадать с именеми, возвращаемыми запросом
 
 Projection с интерфейсами может использовать SpEL
+
+20. Custom repositories
+В случае сложных запросов, требующий criteria api/query dsl
+Интерфейс + его реализация с префиксом Impl. Spring ищет именно с таким префиксом
+Задается в конфигурации аннотацией EnableJpaRepositories (JpaRepositoriesAutoConfiguration -> JpaRepositoriesRegistrar).
+Можно переопределить, задав эту аннотацию у конфигурационного файла.
+Repository наследует этот интерфейс.
