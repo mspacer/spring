@@ -55,6 +55,30 @@ public class UserRepositoryTest {
     }
 
     @Test
+    void checkJdbcBatchNamed() {
+        List<User> users = userRepository.findAll();
+
+        int[] ints = userRepository.updateCompanyAndRoleNamed(users);
+
+        assertThat(ints).hasSize(users.size());
+    }
+
+    @Test
+    void checkJdbcBatch() {
+        List<User> users = userRepository.findAll();
+
+        int[] ints = userRepository.updateCompanyAndRole(users);
+
+        assertThat(ints).hasSize(users.size());
+    }
+
+    @Test
+    void checkJdbcTemplate() {
+        List<PersonalInfo> personalInfos = userRepository.findAllByCompanyAndRole(3, Role.ADMIN);
+        assertThat(personalInfos).isNotEmpty();
+    }
+
+    @Test
     void checkRevision() {
         Revisions<Integer, User> revisions = userRepository.findRevisions(1l);
         System.out.println();
