@@ -1,10 +1,9 @@
 package com.msp.spring.config;
 
 import com.msp.spring.database.pool.ConnectionPool;
-import com.msp.web.config.WebConfiguration;
+import com.msp.spring.web.configuration.WebConfiguration;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
