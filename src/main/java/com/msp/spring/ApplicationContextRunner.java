@@ -1,15 +1,10 @@
 package com.msp.spring;
 
-import com.msp.spring.service.CompanyService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.SpringProperties;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan // ищет все классы с аннотацией ConfigurationProperties

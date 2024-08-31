@@ -8,5 +8,6 @@ import lombok.Value;
 public class CompanyReadDto {
 
     public int id;
+    public String name;
 
 }

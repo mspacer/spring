@@ -24,8 +24,8 @@ spring:
     view:
       prefix: /WEB-INF/jsp
       suffix: .jsp
-
-
+ #   format:
+ #     date: iso #yyyy-MM-dd
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
@@ -36,6 +36,12 @@ spring:
       show_sql: true
       format_sql: true
       hbm2ddl.auto: validate
+    open-in-view: false
+
+#  config:
+#    activate:
+#      on-profile: prod
+
 server:
   error:
     whitelabel:

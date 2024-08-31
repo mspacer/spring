@@ -39,7 +39,7 @@ class CompanyServiceIT {
 
     @Test
     void findById() {
-        CompanyReadDto expectedDto = new CompanyReadDto(1);
+        CompanyReadDto expectedDto = new CompanyReadDto(1, "Google");
 
         Optional<CompanyReadDto> actualResult = companyService.findById(1);
 

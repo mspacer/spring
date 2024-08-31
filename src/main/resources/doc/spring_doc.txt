@@ -427,3 +427,15 @@ Spring всегда делает forward или include (см InternalResourceVi
 
 Best practice for controllers
 https://phauer.com/2015/restful-api-design-best-practices/
+
+@PostMapping и @PutMapping используютя для соответственно create и update запросов, но поскольку в html-формах может быть
+только put и get запросы, их можно применять только в REST-запросах
+
+Трансакции по умолчания открываются на уровне контроллеров. Для отключения нужно установить параметр
+        spring.jpa.open-in-view: false
+
+Для добавления новых возможностей или изменения дефолтного поведения создается файл конфигурации, расширяющий WebMvcConfigurer
+Пример формат даты
+- в проперти файле параметр spring.mvc.format.date: yyyy-MM-dd (WebMvcProperties)
+- аннотацию над полем @DateTimeFormat(pattern = "yyyy-MM-dd")
+- создание форматтера в конфигурации.
