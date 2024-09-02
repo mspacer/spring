@@ -27,6 +27,6 @@ public class Revision {
     private Integer id;
 
     @RevisionTimestamp
-    private Date timestamp;
+    private Long timestamp;
 
 }

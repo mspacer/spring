@@ -27,9 +27,9 @@ spring:
  #   format:
  #     date: iso #yyyy-MM-dd
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres_spr
     username: postgres
-    password: password
+    password: 2wsx2WSX
     driver-class-name: org.postgresql.Driver
   jpa:
     properties.hibernate:
