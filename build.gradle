@@ -29,6 +29,8 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.3.1'
     implementation 'com.querydsl:querydsl-jpa'
 
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
     annotationProcessor 'com.querydsl:querydsl-apt'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

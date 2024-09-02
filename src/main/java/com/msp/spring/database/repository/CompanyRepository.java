@@ -1,6 +1,7 @@
 package com.msp.spring.database.repository;
 
 import com.msp.spring.database.entity.Company;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.Repository;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 //@Repository нет необходимости т.к. spring ищет по наследуемому интерфейсу
-public interface CompanyRepository extends CrudRepository/*Repository*/<Company, Integer> {
+public interface CompanyRepository extends JpaRepository/*Repository*/<Company, Integer> {
 
     //CrudRepository уже имеет базовые методы
     //Optional<Company> findById(Integer id);

@@ -439,3 +439,15 @@ https://phauer.com/2015/restful-api-design-best-practices/
 - в проперти файле параметр spring.mvc.format.date: yyyy-MM-dd (WebMvcProperties)
 - аннотацию над полем @DateTimeFormat(pattern = "yyyy-MM-dd")
 - создание форматтера в конфигурации.
+
+26. Thymeleaf
+https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#standard-expression-syntax
+
+27. Практика
+
+RedirectAttributes attributes позволяет передать параметры с одного экшена другому
+attributes.addAttribute - простые параметры (имя и тип должны соответствовать принимающей модели)
+attributes.addFlashAttribute - объект (имя атрибута должно присутстовать в принимающей модели, или параметр помечен @ModelAttribute("имя атрибута"))
+
+В spring mvc есть встроенная поддержка пейженации. В контексте уже лежит бин Pageable, который обрабатывает и устанавливает
+PageableArgumentResolver

@@ -20,10 +20,10 @@ db:
       timeout: 3
 
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/jsp
-      suffix: .jsp
+ # mvc:
+ #   view:
+ #     prefix: /WEB-INF/jsp
+ #     suffix: .jsp
  #   format:
  #     date: iso #yyyy-MM-dd
   datasource:

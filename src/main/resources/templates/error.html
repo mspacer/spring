@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<p>
+<h1>Error Page</h1>
+<p>Application has encountered an error. Please contact support on ...</p>
+
+<p>
+    <form action="/login">
+        <button type="submit">Please to login</button>
+    </form>
+</p>
+
+Failed URL: <th:block th:utext="${url}"/>
+<br/>
+Exception:  <th:block th:utext="${exception.message}"/>
+<br/>
+<br/>
+
+<div th:each="ste : ${exception.stackTrace}">
+    <th:block th:utext="${ste}"/>
+</div>
+
+</body>
+</html>

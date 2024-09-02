@@ -23,8 +23,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        //registry.addConverter(Jsr310Converters.StringToLocalDateConverter.INSTANCE);
-        registry.addConverter(String.class, LocalDate.class,
-                source -> LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+      //  registry.addConverter(Jsr310Converters.StringToLocalDateConverter.INSTANCE);
+       // registry.addConverter(String.class, LocalDate.class,
+       //         source -> LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 }
