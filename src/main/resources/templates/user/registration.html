@@ -5,6 +5,12 @@
     <title>Registration</title>
 </head>
 <body>
+<div th:if="${errors}">
+    <h3>Errors</h3>
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
+<br>
+
 <form th:action="@{/users}" method="post" th:object="${user}">
     <label for="username">Username:
         <input id="username" type="text" name="username" th:value="*{username}">

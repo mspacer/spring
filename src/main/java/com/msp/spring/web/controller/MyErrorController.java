@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +22,13 @@ public class MyErrorController implements ErrorController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ModelAndView handleError(HttpServletRequest req, Exception ex) {
+    public ModelAndView handleError(HttpServletRequest req, Exception ex, BindingResult bindingResult) {
         log.error("Request: " + req.getRequestURL() + " raised " + ex);
 
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", ex);
         mav.addObject("url", req.getRequestURL());
+        mav.addObject("bindingResult", bindingResult);
         mav.setViewName("/error");
         return mav;
     }

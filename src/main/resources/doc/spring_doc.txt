@@ -1,3 +1,6 @@
+Spring Boot Gradle Plugin
+https://docs.spring.io/spring-boot/docs/2.0.x/gradle-plugin/reference/html/
+
 1.
 Inversion of Control - принцип программирования, при котором управлением выполнения программы (созданием объектов в частности) занимается фреймворк, а не программист
 Происходит потеря контроля над управлением кодом: фреймворк управляет кодом программиста. Однако программист сосредотачивается над написанием бизнесслогики.
@@ -467,3 +470,19 @@ change - составляющая часть changeset-а. 1 update = 1 change. 
 Интегрируетя со spring boot. LiquibaseAutoConfiguration
 LiquibaseProperties (spring.liquibase)
     changeLog - путь к файлу, содержищему все changelog-и
+
+29. Validation starter
+Основа - jsr380(330) validation api и реализация в hibernate validation
+https://hibernate.org/validator/documentation/
+https://beanvalidation.org/2.0/
+Например, реализация @Email в org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
+ValidatorImpl точка входа в валдацию
+Все валидаторы являются компонентами
+
+Для запуска процесса валидации над бином ставиться аннотация javax.validation.Valid или org.springframework.validation.annotation.Validated
+(spring-аналог Valid, дополнительно позволяет указывать группы валидации)
+
+Валидаторы можно разделить на группы. Если у валидатора нет явно указанной группы, он относится к группе javax.validation.groups.Default.class
+Если Validated требуется валидация по группам, необходимо указывать все группы, включая Default
+
+

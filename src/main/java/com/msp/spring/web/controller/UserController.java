@@ -7,12 +7,16 @@ import com.msp.spring.database.dto.UserReadDto;
 import com.msp.spring.database.entity.Role;
 import com.msp.spring.service.CompanyService;
 import com.msp.spring.service.UserService;
+import com.msp.spring.validator.group.CreationAction;
+import com.msp.spring.validator.group.UpdateAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.groups.Default;
 
 @Controller
 @RequestMapping("/users")
@@ -61,14 +67,17 @@ public class UserController {
 
     @PostMapping
     //@ResponseStatus(HttpStatus.CREATED)
-    public String create(@ModelAttribute UserCreateEditDto user, RedirectAttributes attributes) {
-        if (true) {
+    public String create(@ModelAttribute @Validated({Default.class, CreationAction.class }) UserCreateEditDto user,
+                         BindingResult bindingResult,
+                         RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
 /*
             attributes.addAttribute("username", user.getUsername());
             attributes.addAttribute("firstname", user.getFirstname());
             attributes.addAttribute("birthDate", "2000-12-13");
 */
             attributes.addFlashAttribute("user", user);
+            attributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/users/registration";
         }
         return "redirect:/users/" + userService.create(user).getId();
@@ -76,7 +85,7 @@ public class UserController {
 
 //    @PutMapping("/{id}")
     @PostMapping("/{id}/update")
-    public String update(@PathVariable("id") Long id, @ModelAttribute UserCreateEditDto user) {
+    public String update(@PathVariable("id") Long id, @ModelAttribute @Validated({Default.class, UpdateAction.class }) UserCreateEditDto user) {
         return userService.update(id, user)
                 .map(it -> "redirect:/users/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
