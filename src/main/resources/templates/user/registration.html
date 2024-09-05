@@ -11,7 +11,7 @@
 </div>
 <br>
 
-<form th:action="@{/users}" method="post" th:object="${user}">
+<form th:action="@{/users}" method="post" enctype="multipart/form-data" th:object="${user}">
     <label for="username">Username:
         <input id="username" type="text" name="username" th:value="*{username}">
     </label><br>
@@ -23,6 +23,9 @@
     </label><br>
     <label for="firstname">Firstname:
         <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
+    </label><br>
+    <label for="image">Image:
+        <input id="image" type="file" name="image"/>
     </label><br>
     <div th:each="role : ${roles}">
         <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role == user.role}">

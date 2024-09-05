@@ -2,8 +2,6 @@ package com.msp.spring.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,9 +10,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.msp.spring.web.controller")
 @Slf4j
-public class MyErrorController implements ErrorController {
+public class MyErrorControllerHandler implements ErrorController {
 
     @RequestMapping("/error")
     public String handleError() {

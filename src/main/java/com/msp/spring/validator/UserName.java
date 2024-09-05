@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserInfoValidator.class)
-public @interface UserInfo {
+@Constraint(validatedBy = UserNameValidator.class)
+public @interface UserName {
 
-    String message() default "UserInfo: firstname и lastname не должны быть пустыми";
+    String message() default "firstname и lastname не должны быть пустыми";
 
     Class<?>[] groups() default { };
 

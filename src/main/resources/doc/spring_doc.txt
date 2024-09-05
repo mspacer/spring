@@ -475,6 +475,8 @@ LiquibaseProperties (spring.liquibase)
 Основа - jsr380(330) validation api и реализация в hibernate validation
 https://hibernate.org/validator/documentation/
 https://beanvalidation.org/2.0/
+https://reflectoring.io/bean-validation-with-spring-boot/
+
 Например, реализация @Email в org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 ValidatorImpl точка входа в валдацию
 Все валидаторы являются компонентами
@@ -485,4 +487,31 @@ ValidatorImpl точка входа в валдацию
 Валидаторы можно разделить на группы. Если у валидатора нет явно указанной группы, он относится к группе javax.validation.groups.Default.class
 Если Validated требуется валидация по группам, необходимо указывать все группы, включая Default
 
+Ести валидатор проставлен над типом, то ошибки попадают в globalErrors, соответственно над полем - fieldErrors
 
+30. Rest (Representational State Transfer)
+
+@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE) - формат данных пришедшего запроса
+@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) - формат ответа
+@RequestBody - параметры в теле запроса
+
+ControllerAdvice позволяет указать пакет контроллеров, для которых будет обрабатываться Exception
+ResponseEntityExceptionHandler - абстрактый класс, содержащий меторы, обрабатывающие исключения в контроллерах
+Написав свой класс-наследник с аннотацией ControllerAdvice, можно делать такую обработку.
+В случае обычных контроллеров перенаправлять на страницу error, для rect контроллеров формировать json ответ с ошибками.
+Например, обработчик ошибок валидации параметров - ResponseEntityExceptionHandler.handleMethodArgumentNotValid получает
+MethodArgumentNotValidException, содержащий BindingResult
+
+com.fasterxml.jackson.databind.ObjectMapper позволяет серилизовать объект в json и обратно.
+https://javarush.com/quests/lectures/jru.module2.lecture31
+
+Запросы к rest-контроллерам можно делать
+- из idea Tools->HTTP client
+- Postman
+- swagger (зависимость springdoc-openapi-ui)
+
+org.springdoc.core.Constants содержит свойства, в частности урл по которому генерится документация DEFAULT_API_DOCS_URL = "/v3/api-docs"
+springdoc интегрирован с swagger:  DEFAULT_PATH_SEPARATOR + "swagger-ui.html" - которую генерит springdoc
+
+тест
+https://www.baeldung.com/sprint-boot-multipart-requests

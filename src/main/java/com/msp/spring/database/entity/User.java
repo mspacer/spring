@@ -9,6 +9,7 @@ import lombok.ToString;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Access;
 import javax.persistence.Column;
@@ -70,5 +71,7 @@ public class User extends AuditingEntity<Long> {
     @Builder.Default
     @NotAudited
     private List<UsersChat> usersChats = new ArrayList<>();
+
+    private String image;
 
 }

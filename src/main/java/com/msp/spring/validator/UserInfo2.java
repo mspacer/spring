@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserInfoValidator.class)
-public @interface UserInfo {
+@Constraint(validatedBy = UserInfoValidator2.class)
+public @interface UserInfo2 {
 
-    String message() default "UserInfo: firstname и lastname не должны быть пустыми";
+    String message() default "UserInfo2: firstname и lastname не должны быть пустыми";
 
     Class<?>[] groups() default { };
 

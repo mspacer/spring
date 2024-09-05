@@ -5,6 +5,8 @@ plugins {
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
+apply from: 'version.gradle'
+
 apply plugin: 'io.spring.dependency-management'
 
 group 'org.example'
@@ -12,6 +14,10 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+
+    flatDir {
+        dirs rootDir.absolutePath + File.separator + 'lib'
+    }
 }
 
 configurations {
@@ -33,7 +39,12 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
+
     implementation 'org.liquibase:liquibase-core'
+
+    implementation 'ibs.common:dto:1.0.0'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.1'
 
     annotationProcessor 'com.querydsl:querydsl-apt'
 
@@ -43,7 +54,7 @@ dependencies {
 
 querydsl {
     jpa = true
-    library = 'com.querydsl:querydsl-apt:5.0.0'
+    library = "com.querydsl:querydsl-apt:${versions.querydsl}"
     querydslSourcesDir = "$buildDir/generated/sources/annotationProcessor/java/main"
 }
 

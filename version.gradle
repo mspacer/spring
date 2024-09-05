@@ -1,0 +1,6 @@
+ext {
+    versions = [
+            'querydsl': '5.0.0',
+            'springdoc': '1.6.6'
+    ]
+}

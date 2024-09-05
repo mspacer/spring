@@ -20,6 +20,8 @@ db:
       timeout: 3
 
 spring:
+  profiles:
+    active: prod
  # mvc:
  #   view:
  #     prefix: /WEB-INF/jsp
@@ -32,11 +34,17 @@ spring:
     password: 2wsx2WSX
     driver-class-name: org.postgresql.Driver
   jpa:
-    properties.hibernate:
-      show_sql: true
-      format_sql: true
-      hbm2ddl.auto: validate
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl.auto: validate
     open-in-view: false
+
 
 #  config:
 #    activate:
