@@ -516,3 +516,8 @@ springdoc интегрирован с swagger:  DEFAULT_PATH_SEPARATOR + "swagge
 
 тест
 https://www.baeldung.com/sprint-boot-multipart-requests
+
+Payload - интерфейс-маркер.
+https://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/validator-customconstraints.html#validator-customconstraints-constraintannotation
+С помощью наследников, указанный в валидаторе можно обрабатывать их в ConstraintViolation для, раализуя дополнительной логику валидации
+ConstraintViolation возвращает ручной вызов validator.validate(...)

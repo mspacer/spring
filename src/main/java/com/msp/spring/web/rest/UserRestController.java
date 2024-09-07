@@ -11,6 +11,7 @@ import com.msp.spring.service.UserService;
 import com.msp.spring.validator.group.CreationAction;
 import com.msp.spring.validator.group.FirstOrder;
 import com.msp.spring.validator.group.SecondOrder;
+import com.msp.spring.validator.payload.FirstNamePayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ import javax.validation.*;
 import javax.validation.groups.Default;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
@@ -138,6 +141,14 @@ public class UserRestController {
 
     private void buildErrors(Set<ConstraintViolation<UserCreateEditDto>> violations, Errors errors) {
         violations.forEach(violation -> {
+                    if (!CollectionUtils.isEmpty(violation.getConstraintDescriptor().getPayload())) {
+                        log.info("payloads: {}", violation.getConstraintDescriptor().getPayload());
+                        Class<? extends Payload> aClass = CollectionUtils.firstElement(violation.getConstraintDescriptor().getPayload());
+                        if (aClass == FirstNamePayload.class) {
+                            log.info("payload is FirstNamePayload.class");
+                        }
+                    }
+
                     String fieldName = Objects.toString(violation.getPropertyPath(), null);
                     if (!StringUtils.hasText(fieldName)) {
                         fieldName = Objects.toString(violation.getConstraintDescriptor().getAttributes().get("field"), null);
