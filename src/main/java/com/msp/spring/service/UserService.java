@@ -105,7 +105,7 @@ public class UserService {
     }
 
     private void uploadImage(MultipartFile image) {
-        if (!image.isEmpty()) {
+        if (image != null && !image.isEmpty()) {
             try {
                 fileService.upload(image.getOriginalFilename(), image.getInputStream());
             } catch (IOException e) {

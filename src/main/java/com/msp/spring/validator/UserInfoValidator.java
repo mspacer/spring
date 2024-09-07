@@ -15,7 +15,7 @@ import javax.validation.ConstraintValidatorContext;
 @Slf4j
 public class UserInfoValidator implements ConstraintValidator<UserInfo, UserCreateEditDto> {
 
-    private final NoComponentBean noComponentBean;
+    //private final NoComponentBean noComponentBean;
 
     @Autowired
     private UserService userService;
@@ -28,8 +28,10 @@ public class UserInfoValidator implements ConstraintValidator<UserInfo, UserCrea
     @Override
     public boolean isValid(UserCreateEditDto value, ConstraintValidatorContext context) {
         log.info("UserInfoValidator isValid()");
+/*
         log.info("preview: {}", noComponentBean.toString());
         noComponentBean.setStr(value.getFirstname() + "/" + value.getLastname());
-        return true;//StringUtils.hasText(value.getFirstname()) || StringUtils  .hasText(value.getLastname()) ;
+*/
+        return false;//StringUtils.hasText(value.getFirstname()) || StringUtils  .hasText(value.getLastname()) ;
     }
 }

@@ -47,7 +47,8 @@ public class UserServiceIT extends IntegrationTestBase {
                 "Test",
                 "Test",
                 Role.ADMIN,
-                COMPANY_1
+                COMPANY_1,
+                null
         );
         UserReadDto actualResult = userService.create(userDto);
 
@@ -67,7 +68,8 @@ public class UserServiceIT extends IntegrationTestBase {
                 "Test",
                 "Test",
                 Role.ADMIN,
-                COMPANY_1
+                COMPANY_1,
+                null
         );
 
         Optional<UserReadDto> actualResult = userService.update(USER_1, userDto);

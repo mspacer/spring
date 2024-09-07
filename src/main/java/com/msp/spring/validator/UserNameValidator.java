@@ -28,7 +28,8 @@ public class UserNameValidator implements ConstraintValidator<UserName, String> 
         }
         // переопределяеть дефолтный месседж
         context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate() +  " (changed)")
+        String template = context.getDefaultConstraintMessageTemplate();
+        context.buildConstraintViolationWithTemplate(template +  " (changed)")
                 .addConstraintViolation();
         return false;
     }

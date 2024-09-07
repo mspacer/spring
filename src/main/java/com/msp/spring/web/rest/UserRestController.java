@@ -9,7 +9,8 @@ import com.msp.spring.service.CompanyService;
 import com.msp.spring.service.FileService;
 import com.msp.spring.service.UserService;
 import com.msp.spring.validator.group.CreationAction;
-import com.msp.spring.validator.group.UpdateAction;
+import com.msp.spring.validator.group.FirstOrder;
+import com.msp.spring.validator.group.SecondOrder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,8 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,6 +28,7 @@ import javax.validation.*;
 import javax.validation.groups.Default;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -92,7 +94,13 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/multi", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Object create(@RequestPart(value = "model") @Valid UserCreateEditDto user, @RequestPart(value = "files", required = false) MultipartFile[] files) {
+    public Object create(@RequestPart(value = "model") UserCreateEditDto user, Errors errors, @RequestPart(value = "files", required = false) MultipartFile[] files) {
+
+        Set<ConstraintViolation<UserCreateEditDto>> violations = validator2.validate(user, FirstOrder.class, SecondOrder.class, CreationAction.class, Default.class);
+        if (!violations.isEmpty()) {
+            buildErrors(violations, errors);
+            throw new MyValidationException(errors);
+        }
 
         Arrays.stream(files)
                 .forEach(file -> {
@@ -126,6 +134,21 @@ public class UserRestController {
         return userService.delete(id)
                ? ResponseEntity.noContent().build()
                : ResponseEntity.notFound().build();
+    }
+
+    private void buildErrors(Set<ConstraintViolation<UserCreateEditDto>> violations, Errors errors) {
+        violations.forEach(violation -> {
+                    String fieldName = Objects.toString(violation.getPropertyPath(), null);
+                    if (!StringUtils.hasText(fieldName)) {
+                        fieldName = Objects.toString(violation.getConstraintDescriptor().getAttributes().get("field"), null);
+                    }
+
+                    if (StringUtils.hasText(fieldName)) {
+                        errors.rejectValue(fieldName, violation.getMessageTemplate(), violation.getMessage());
+                    } else {
+                        errors.reject(violation.getMessageTemplate(), violation.getMessage());
+                    }
+                });
     }
 
 }

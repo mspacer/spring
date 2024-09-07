@@ -476,6 +476,7 @@ LiquibaseProperties (spring.liquibase)
 https://hibernate.org/validator/documentation/
 https://beanvalidation.org/2.0/
 https://reflectoring.io/bean-validation-with-spring-boot/
+https://www.baeldung.com/spring-mvc-custom-validator
 
 Например, реализация @Email в org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 ValidatorImpl точка входа в валдацию

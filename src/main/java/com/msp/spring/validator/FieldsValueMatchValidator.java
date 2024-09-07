@@ -1,5 +1,6 @@
 package com.msp.spring.validator;
 
+import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 import org.springframework.beans.BeanWrapperImpl;
 
 import javax.validation.ConstraintValidator;
@@ -17,7 +18,6 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
 
     public boolean isValid(Object value,
                            ConstraintValidatorContext context) {
-
         Object fieldValue = new BeanWrapperImpl(value)
                 .getPropertyValue(field);
         Object fieldMatchValue = new BeanWrapperImpl(value)
@@ -29,6 +29,7 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
                     .getPropertyValue(fieldMatch[1]);
         }
 
+       // context.unwrap()
 /*
         if (fieldValue != null) {
             return fieldValue.equals(fieldMatchValue);
@@ -36,5 +37,5 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
             return fieldMatchValue == null;
         }
 */
-        return true;
+        return false;
     }}
