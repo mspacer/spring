@@ -18,6 +18,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
+                .logout(configurer ->
+                        configurer // необязательно, т.к. действуют по умолчанию
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login")
+                                .clearAuthentication(true)
+                                .deleteCookies("JSESSIONID"))
                 .formLogin(configurer ->
                         configurer
                                 .loginPage("/login")
