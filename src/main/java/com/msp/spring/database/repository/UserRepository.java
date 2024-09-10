@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.history.RevisionRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -78,4 +79,5 @@ public interface UserRepository extends
                  "WHERE u.company_id = :companyId")
     List<IPersonalInfo> findUsersByCompanyId(Integer companyId);
 
+    Optional<User> findByUserName(String username);
 }

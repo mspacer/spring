@@ -7,3 +7,12 @@ db:
   driver: OracleDriver
   url: oracle:1251
   hosts: localhost,127.0.0.1
+
+
+
+spring:
+  security:
+    user:
+      name: test
+      password: 123
+      roles: "ADMIN"

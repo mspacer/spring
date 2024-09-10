@@ -50,11 +50,11 @@ spring:
 #    activate:
 #      on-profile: prod
 
-server:
-  error:
-    whitelabel:
-      enabled: false
-    path: /error
+#server:
+#  error:
+#    whitelabel:
+#      enabled: false
+#    path: /error
 
 logging:
   level:

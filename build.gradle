@@ -43,6 +43,8 @@ dependencies {
 
     implementation 'org.liquibase:liquibase-core'
 
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     implementation 'ibs.common:dto:1.0.0'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.1'
 

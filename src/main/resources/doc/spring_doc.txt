@@ -490,6 +490,11 @@ ValidatorImpl точка входа в валдацию
 
 Ести валидатор проставлен над типом, то ошибки попадают в globalErrors, соответственно над полем - fieldErrors
 
+Payload - интерфейс-маркер.
+https://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/validator-customconstraints.html#validator-customconstraints-constraintannotation
+С помощью наследников, указанный в валидаторе можно обрабатывать их в ConstraintViolation для, раализуя дополнительной логику валидации
+ConstraintViolation возвращает ручной вызов validator.validate(...)
+
 30. Rest (Representational State Transfer)
 
 @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE) - формат данных пришедшего запроса
@@ -517,7 +522,69 @@ springdoc интегрирован с swagger:  DEFAULT_PATH_SEPARATOR + "swagge
 тест
 https://www.baeldung.com/sprint-boot-multipart-requests
 
-Payload - интерфейс-маркер.
-https://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/validator-customconstraints.html#validator-customconstraints-constraintannotation
-С помощью наследников, указанный в валидаторе можно обрабатывать их в ConstraintViolation для, раализуя дополнительной логику валидации
-ConstraintViolation возвращает ручной вызов validator.validate(...)
+31. Security starter
+
+Аутентификация - пороверка подлинности пользователя (например, на основе логина и пароля)
+Авторизация - проверка прав на выполнение определенных действий.
+
+В случае HTTP servlets перез вызовом сервлета, вызывается цепочка объявленных фильров - javax.servlet.Filter, javax.servlet.FilterChain
+Эти фильтры управляются контейнером сервлетов.
+В Spring фильтры являются бинами и подчинены жизненному циклу бинов, поэтому управляются spring-ом.
+Для этого существует один фильтр DelegatingFilterProxy, который принимает FilterChainProxy,
+который в свою очередь управляет цепочкой вызовов фильтров - SecurityFilterChain
+Цепочка фильтров (при каждом запросе вызывается последовательно)
+org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter
+org.springframework.security.web.context.SecurityContextPersistenceFilter,
+org.springframework.security.web.header.HeaderWriterFilter
+org.springframework.security.web.csrf.CsrfFilter
+org.springframework.security.web.authentication.logout.LogoutFilter
+org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter
+org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter
+org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+org.springframework.security.web.savedrequest.RequestCacheAwareFilter
+org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter
+org.springframework.security.web.authentication.AnonymousAuthenticationFilter
+org.springframework.security.web.session.SessionManagementFilter
+org.springframework.security.web.access.ExceptionTranslationFilter
+org.springframework.security.web.access.intercept.FilterSecurityInterceptor
+
+SecurityFilterChain создается в SpringBootWebSecurityConfiguration и принимет HttpSecurity
+HttpSecurity - билдер, который билдит SecurityFilterChain, а посути, основную конфигурацию Spring Security
+HttpSecurity конфигурирует HttpSecurityConfiguration
+
+Автоконфигурация SecurityAutoConfiguration, SecurityFilterAutoConfiguration
+По умолчанию пользователь user, автогенеренный пароль выводится в консоль
+Пользователь задается в пропертях spring.security.user name, passworl, role (org.springframework.boot.autoconfigure.security.SecurityProperties)
+
+SecurityContext - обертка для объекта Authentication, в котором хранятся данные пользователь
+SecurityContextHolder - занимается созданием/хранением SecurityContext
+Имеет несколько стратегий хранения, основная - ThreadLocalSecurityContextHolderStrategy
+
+SecurityContextPersistenceFilter через HttpSessionSecurityContextRepository устанавливает и берет текущего пользователя в javax.servlet.http.HttpSession
+с именем аттрибута SPRING_SECURITY_CONTEXT
+Затем вызывает SecurityContextHolder.setContext() и кладет в переменну TreadLocal<SecurityContext> SecurityContext пользователя.
+
+Аунтетификация пользователя выполняется фильтром. Например, по логину и паролю - UsernamePasswordAuthenticationFilter.
+В фильтре объявляет AuthenticationManager - класс, выполняющий аунтефикацию.
+По умолчанию - ProviderManager, который содержит список провайдеров (наследники AuthenticationProvider), вызываемых последовательно.
+Если какой-либо провайдер выполнил аунтефикацию - SecurityContext устанавливается.
+По умолчанию - DaoAuthenticationProvider
+DaoAuthenticationProvider.UserDetailsService = InMemoryUserDetailsManager по умолчанию в InitializeUserDetailsManagerConfigurer,
+ если в контексте не переопределен UserDetailsService
+Переопределенный сервис в методе loadUserByUsername должен выбрасывать UsernameNotFoundException, есть пользователь не найден
+В сестеме должен быть только один переопределенный UserDetailsService.
+
+Можно переопределить весь менеджер.
+Тогда при инициализации ProviderManager-a в parent придет инстанс переопределенного менеджера
+    ProviderManager(List<AuthenticationProvider> providers, AuthenticationManager parent)
+Он будет вызван после отработки списка провайдеров в методе  authenticate(Authentication authentication)
+
+Кастомная форма логина зависти о параметров, принимаемых UsernamePasswordAuthenticationFilter
+        SPRING_SECURITY_FORM_USERNAME_KEY = "username";
+	    SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
+
+ примеры
+ https://habr.com/ru/articles/545610/
+ https://medium.com/code-with-farhan/spring-security-jwt-authentication-authorization-a2c6860be3cf
+

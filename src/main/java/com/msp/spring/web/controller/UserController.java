@@ -10,9 +10,12 @@ import com.msp.spring.service.UserService;
 import com.msp.spring.validator.group.CreationAction;
 import com.msp.spring.validator.group.UpdateAction;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +34,7 @@ import javax.validation.groups.Default;
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -42,10 +46,12 @@ public class UserController {
         Page<UserReadDto> page = userService.findAll(filter, pageable);
         model.addAttribute("users", PageResponse.of(page));
         model.addAttribute("filter", filter);
+        log.info("security context: {}", SecurityContextHolder.getContext());
         return "user/users";
     }
 
     @GetMapping("/{id}")
+    //@PreAuthorize("")
     public String findById(@PathVariable("id") Long id, Model model) {
         return userService.findById(id)
                 .map(user -> {

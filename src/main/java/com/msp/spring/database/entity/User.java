@@ -36,7 +36,7 @@ import java.util.List;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Data
 @ToString(exclude = "usersChats")
-@EqualsAndHashCode(of = "userName")
+@EqualsAndHashCode(of = "userName", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -48,6 +48,8 @@ public class User extends AuditingEntity<Long> {
 
     @Column(name = "username", unique = true, nullable = false)
     private String userName;
+
+    private String password;
 
     @Column(name = "firstname")
     private String firstName;
