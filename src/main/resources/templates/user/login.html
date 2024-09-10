@@ -5,7 +5,7 @@
     <title>Login</title>
 </head>
 <body>
-<div style="color: red" th:if="{param.errors}">
+<div style="color: red" th:if="${param.errors}">
     Bad credentials
 </div>
 <form action="/login" method="post">

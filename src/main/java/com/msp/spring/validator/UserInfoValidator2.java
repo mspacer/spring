@@ -21,6 +21,6 @@ public class UserInfoValidator2 implements ConstraintValidator<UserInfo2, UserCr
     @Override
     public boolean isValid(UserCreateEditDto value, ConstraintValidatorContext context) {
         log.info("UserInfoValidator2 isValid()");
-        return false;//StringUtils.hasText(value.getFirstname()) || StringUtils  .hasText(value.getLastname()) ;
+        return true;//StringUtils.hasText(value.getFirstname()) || StringUtils  .hasText(value.getLastname()) ;
     }
 }

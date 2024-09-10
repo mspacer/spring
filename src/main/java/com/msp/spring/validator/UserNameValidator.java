@@ -31,6 +31,6 @@ public class UserNameValidator implements ConstraintValidator<UserName, String> 
         String template = context.getDefaultConstraintMessageTemplate();
         context.buildConstraintViolationWithTemplate(template +  " (changed)")
                 .addConstraintViolation();
-        return false;
+        return true;
     }
 }

@@ -42,6 +42,9 @@ public class UserCreateEditDto {
     @Email
     String username;
 
+    @NotBlank(groups = CreationAction.class)
+    String rawPassword;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")// html input date отправляет дату в формате iso
     LocalDate birthDate;
 

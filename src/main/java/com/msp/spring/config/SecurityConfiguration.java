@@ -18,14 +18,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
-                .httpBasic(Customizer.withDefaults());
-/*
                 .formLogin(configurer ->
                         configurer
                                 .loginPage("/login")
                                 .defaultSuccessUrl("/users")
                                 .permitAll());
-*/
     }
 
     /*

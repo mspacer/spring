@@ -37,5 +37,5 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
             return fieldMatchValue == null;
         }
 */
-        return false;
+        return true;
     }}

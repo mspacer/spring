@@ -594,3 +594,8 @@ DaoAuthenticationProvider.UserDetailsService = InMemoryUserDetailsManager по �
  примеры
  https://habr.com/ru/articles/545610/
  https://medium.com/code-with-farhan/spring-security-jwt-authentication-authorization-a2c6860be3cf
+
+32. Password encoder
+Пароли храняться и проверяются в зашифрованном виде.
+Для этого существуют специальные PasswordEncoder. Создаются в PasswordEncoderFactories
+Пример работы в DaoAuthenticationProvider

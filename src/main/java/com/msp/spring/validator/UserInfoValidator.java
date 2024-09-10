@@ -32,6 +32,6 @@ public class UserInfoValidator implements ConstraintValidator<UserInfo, UserCrea
         log.info("preview: {}", noComponentBean.toString());
         noComponentBean.setStr(value.getFirstname() + "/" + value.getLastname());
 */
-        return false;//StringUtils.hasText(value.getFirstname()) || StringUtils  .hasText(value.getLastname()) ;
+        return true;//StringUtils.hasText(value.getFirstname()) || StringUtils  .hasText(value.getLastname()) ;
     }
 }

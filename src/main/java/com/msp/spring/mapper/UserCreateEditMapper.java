@@ -5,7 +5,9 @@ import com.msp.spring.database.entity.Company;
 import com.msp.spring.database.entity.User;
 import com.msp.spring.database.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
@@ -38,6 +40,12 @@ public class UserCreateEditMapper implements Mapper<UserCreateEditDto, User> {
         user.setBirthDate(object.getBirthDate());
         user.setRole(object.getRole());
         user.setCompany(getCompany(object.getCompanyId()));
+
+        // в операции update пароля нет
+        Optional.ofNullable(object.getRawPassword())
+                .filter(StringUtils::hasText)
+                .map(s -> PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(s))
+                .ifPresent(user::setPassword);
 
         Optional.ofNullable(object.getImage())
                 //.filter(multipartFile -> !multipartFile.isEmpty())
