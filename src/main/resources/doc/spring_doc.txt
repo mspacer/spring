@@ -584,7 +584,13 @@ DaoAuthenticationProvider.UserDetailsService = InMemoryUserDetailsManager по �
         SPRING_SECURITY_FORM_USERNAME_KEY = "username";
 	    SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
 
+31. Spring security. Basic authentification
+Аутентификация происходит с помощью параметра Authorization в header-e
+При этом браузер автоматически открывает форму с логин/паролем
+Получившийся токен имеет префикс Basic - параметр конвертера по умолчанию в BasicAuthenticationFilter BasicAuthenticationConverter
+Конвертер парсит токен и возвращает UsernamePasswordAuthenticationToken
+Далее обработка происходит в BasicAuthenticationFilter менеджером и провайдером по аналогии с UsernamePasswordAuthenticationFilter
+
  примеры
  https://habr.com/ru/articles/545610/
  https://medium.com/code-with-farhan/spring-security-jwt-authentication-authorization-a2c6860be3cf
-
