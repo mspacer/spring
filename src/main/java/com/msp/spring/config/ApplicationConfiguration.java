@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 @Import(WebConfiguration.class) //импорт других файлов конфигурации
 @Configuration()
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Import;
             @Filter(type = FilterType.REGEX, pattern = ".+Repository")
         })
 */
+@EnableMethodSecurity
 public class ApplicationConfiguration implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;

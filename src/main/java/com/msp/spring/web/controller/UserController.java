@@ -14,18 +14,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,6 +36,7 @@ import javax.validation.groups.Default;
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@SessionAttributes(value = {"loginUser"})
 @Slf4j
 public class UserController {
 
@@ -41,21 +44,31 @@ public class UserController {
     private final CompanyService companyService;
 
     @GetMapping
-    public String findAll(Model model, UserFilter filter, Pageable pageable) {
+    //@PreFilter(value = "filter.firstName.contains('a')", filterTarget = "filter")
+    public String findAll(Model model,
+                          UserFilter filter,
+                          Pageable pageable,
+                          @AuthenticationPrincipal UserDetails userDetails) {
 //        model.addAttribute("users", userService.findAll(filter));
         Page<UserReadDto> page = userService.findAll(filter, pageable);
         model.addAttribute("users", PageResponse.of(page));
         model.addAttribute("filter", filter);
+        model.addAttribute("loginUser", userDetails);
         log.info("security context: {}", SecurityContextHolder.getContext());
         return "user/users";
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("")
-    public String findById(@PathVariable("id") Long id, Model model) {
+    @PreAuthorize("hasAuthority('ADMIN') and @userService.findAll().size() > 0")
+    //@PostAuthorize("returnObject")
+    public String findById(@PathVariable("id") Long id,
+                           Model model,
+                           //@CurrentSecurityContext SecurityContext securityContext
+                           @AuthenticationPrincipal UserDetails userDetails) {
         return userService.findById(id)
                 .map(user -> {
                     model.addAttribute("user", user);
+                    model.addAttribute("loginUser", userDetails);
                     model.addAttribute("roles", Role.values());
                     model.addAttribute("companies", companyService.findAll());
                     return "user/user";

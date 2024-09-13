@@ -15,10 +15,16 @@ import com.msp.spring.validator.payload.FirstNamePayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreFilter;
+import org.springframework.security.core.parameters.P;
+import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -29,10 +35,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.*;
 import javax.validation.groups.Default;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -50,6 +53,22 @@ public class UserRestController {
     public PageResponse<UserReadDto> findAll(UserFilter filter, Pageable pageable) {
         Page<UserReadDto> page = userService.findAll(filter, pageable);
         return PageResponse.of(page);
+    }
+
+    @GetMapping("/all")
+    //@PostFilter("filterObject.role.name().equals('USER')")
+    @PostFilter("@companyService.findById(filterObject.company.id).get().id == 1")
+    public List<UserReadDto> findAll() {
+        List<UserReadDto> all = userService.findAll();
+        //toList() возвращает Сollections.unmodifiableList
+        List<UserReadDto> result = new ArrayList<>(all);
+        return result;
+    }
+
+    @GetMapping("/byFilter")
+    @PreFilter("#f.firstName.contains('a')")
+    public Page<UserReadDto> findAll(@P("f") UserFilter filter) {
+        return userService.findAll(filter, PageRequest.of(1, 3));
     }
 
     @GetMapping("/{id}")

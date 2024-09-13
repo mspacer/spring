@@ -6,6 +6,8 @@
 </head>
 <body>
     <div th:fragment="header">
+        <span th:text="${session.loginUser.username}"/>
+        <span th:text="${#authorization.getAuthentication().getName()}"/>
         <form action="/logout" method="post">
             <button type="submit">Logout</button>
         </form>

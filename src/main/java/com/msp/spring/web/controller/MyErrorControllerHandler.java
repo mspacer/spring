@@ -1,7 +1,9 @@
 package com.msp.spring.web.controller;
 
+import com.msp.spring.exception.MyValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,10 +12,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAdvice(basePackages = "com.msp.spring.web.controller")
+// конфликтует с таймлифом и по какой-то причине при 403 ошибке запускается повторно FilterChain и получается 404 ошибка
+//@ControllerAdvice(basePackages = "com.msp.spring.web.controller")
 @Slf4j
-public class MyErrorControllerHandler implements ErrorController {
+public class MyErrorControllerHandler /*implements ErrorController*/ {
 
+    @ExceptionHandler(AuthenticationException.class)
+    public String handleError() {
+        return "error";
+    }
+
+/*
     @RequestMapping("/error")
     public String handleError() {
         return "/error";
@@ -30,5 +39,6 @@ public class MyErrorControllerHandler implements ErrorController {
         mav.setViewName("/error");
         return mav;
     }
+*/
 
 }
