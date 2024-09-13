@@ -1,6 +1,7 @@
 package com.msp.spring;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -11,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
     "classpath:sql/data.sql"
 })
 */
+@WithMockUser(username = "test", password = "test", authorities = {"ADMIN"})
 public abstract class IntegrationTestBase {
 
 /*

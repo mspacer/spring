@@ -19,8 +19,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .httpBasic() //для rest-контролера Basic Auth
-                .and()
                 .authorizeHttpRequests(authorizeRequest ->
                         authorizeRequest
                                 .antMatchers("/login", "/logout", "/users/registration", "/v3/api-docs/**", "/swagger-ui/**" ).permitAll()
@@ -28,6 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 .antMatchers("/users/{\\d+}/delete").hasAuthority(Role.ADMIN.name())
                                 .anyRequest()
                                 .authenticated())
+                //.httpBasic() //для rest-контролера Basic Auth
+                //.and()
                 .logout(configurer ->
                         configurer // необязательно, т.к. действуют по умолчанию
                                 .logoutUrl("/logout")
