@@ -49,6 +49,9 @@ dependencies {
     implementation 'ibs.common:dto:1.0.0'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.1'
 
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+
     annotationProcessor 'com.querydsl:querydsl-apt'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

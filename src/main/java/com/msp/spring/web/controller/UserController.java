@@ -84,7 +84,7 @@ public class UserController {
         return "user/registration";
     }
 
-    @PostMapping
+    @PostMapping("/create")
     //@ResponseStatus(HttpStatus.CREATED)
     public String create(@ModelAttribute @Validated({Default.class, CreationAction.class }) UserCreateEditDto user,
                          BindingResult bindingResult,

@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 
 // конфликтует с таймлифом и по какой-то причине при 403 ошибке запускается повторно FilterChain и получается 404 ошибка
 //@ControllerAdvice(basePackages = "com.msp.spring.web.controller")
 @Slf4j
-public class MyErrorControllerHandler /*implements ErrorController*/ {
+public class MyErrorControllerHandler/* implements ErrorController*/{
 
     @ExceptionHandler(AuthenticationException.class)
     public String handleError() {
@@ -27,7 +28,9 @@ public class MyErrorControllerHandler /*implements ErrorController*/ {
     public String handleError() {
         return "/error";
     }
+*/
 
+/*
     @ExceptionHandler(Exception.class)
     public ModelAndView handleError(HttpServletRequest req, Exception ex, BindingResult bindingResult) {
         log.error("Request: " + req.getRequestURL() + " raised " + ex);
@@ -37,7 +40,7 @@ public class MyErrorControllerHandler /*implements ErrorController*/ {
         mav.addObject("url", req.getRequestURL());
         mav.addObject("bindingResult", bindingResult);
         mav.setViewName("/error");
-        return mav;
+        return "error";
     }
 */
 

@@ -8,8 +8,6 @@ db:
   url: oracle:1251
   hosts: localhost,127.0.0.1
 
-
-
 spring:
   security:
     user:

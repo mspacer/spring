@@ -19,9 +19,15 @@ public class AuditConfiguration {
     @Bean
     public AuditorAware<String> auditorAware() {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(authentication -> (UserDetails)authentication.getPrincipal())
-                .map(UserDetails::getUsername);
-                //.map(authentication -> authentication.getName());
+                .map(authentication -> {
+                    if (authentication.getPrincipal() instanceof UserDetails) {
+                        return ((UserDetails) authentication.getPrincipal()).getUsername();
+                    } else {
+                        return authentication.getPrincipal();
+                    }
+                })
+                .map(Object::toString);
+        //.map(authentication -> authentication.getName());
     }
 
 /*

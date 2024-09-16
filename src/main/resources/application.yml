@@ -21,7 +21,7 @@ db:
 
 spring:
   profiles:
-    active: prod
+    active: prod, oauth
  # mvc:
  #   view:
  #     prefix: /WEB-INF/jsp
@@ -50,7 +50,7 @@ server:
     whitelabel:
       enabled: false
   include-stacktrace: always
-#    path: /error
+  path: /error
 
 logging:
   level:

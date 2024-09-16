@@ -1,5 +1,7 @@
 Spring Boot Gradle Plugin
 https://docs.spring.io/spring-boot/docs/2.0.x/gradle-plugin/reference/html/
+https://docs.spring.io/spring-boot/docs/2.1.3.RELEASE/reference/html/index.html
+https://docs.spring.io/spring-security/site/docs/5.0.7.RELEASE/reference/html/index.html
 
 1.
 Inversion of Control - принцип программирования, при котором управлением выполнения программы (созданием объектов в частности) занимается фреймворк, а не программист
@@ -585,15 +587,16 @@ DaoAuthenticationProvider.UserDetailsService = InMemoryUserDetailsManager по �
 	    SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
 
 31. Spring security. Basic authentification
+    https://docs.spring.io/spring-security/site/docs/5.0.7.RELEASE/reference/html/index.html
+примеры
+    https://habr.com/ru/articles/545610/
+    https://medium.com/code-with-farhan/spring-security-jwt-authentication-authorization-a2c6860be3cf
+
 Аутентификация происходит с помощью параметра Authorization в header-e
 При этом браузер автоматически открывает форму с логин/паролем
 Получившийся токен имеет префикс Basic - параметр конвертера по умолчанию в BasicAuthenticationFilter BasicAuthenticationConverter
 Конвертер парсит токен и возвращает UsernamePasswordAuthenticationToken
 Далее обработка происходит в BasicAuthenticationFilter менеджером и провайдером по аналогии с UsernamePasswordAuthenticationFilter
-
- примеры
- https://habr.com/ru/articles/545610/
- https://medium.com/code-with-farhan/spring-security-jwt-authentication-authorization-a2c6860be3cf
 
 32. Password encoder
 Пароли храняться и проверяются в зашифрованном виде.
@@ -635,3 +638,14 @@ PreAuthorize вызывается до вызова метода, PostAuthorize 
 Аннотация @WithMockUser(username, password, authorities) устанавливает пользователья в контекст. Значения неважны.
 Можно установить над типом, над методом, если требуется отличный от общего пользователь, либо вызвать get()/post() c
 вызовом методы with()
+
+36 OAuth 2.0
+https://docs.spring.io/spring-security/site/docs/5.0.7.RELEASE/reference/html/oauth2login-advanced.html
+
+Если есть несколько приложение с аунтентификацией неудобно в каждом хранить базу с паролями пользователей и, соответсвенно,
+держать логин-форму с требованием зарегистироваться
+OAuth - единый внешний механизм аунтентификации
+
+Будут подключины два фильтра
+OAuth2AuthorizationRequestRedirectFilter
+OAuth2LoginAuthenticationFilter
