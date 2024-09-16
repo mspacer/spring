@@ -12,4 +12,13 @@ spring:
               - email
               - profile
 
-
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id:
+      client-secret:
+      scope:
+        - openid
+        - email
+        - profile
+    oauth2-redirect-url: http://localhost:8080/swagger-ui/oauth2-redirect.html
