@@ -663,3 +663,16 @@ https://jwt.io/ - расшифровка токена (кодируется в b
 Настраивается через пороперти. Названия аналогичны как для приложения
 Плюс конфигурация с указанием сервера аунтентификации
 
+39. Интернационализация
+
+установить в Idea
+Settings -> File encoding:
+ - Default enconding for properties files: UTF-8
+ - Установить чекбокс Transparent native......
+
+ При использовании  MessageSource
+ - в пропертях прописываем свойство
+        spring.messages.basename: messages
+ - создаем дефолтный файл messages.properties
+
+ LocaleChangeInterceptor и LocaleResolver определяют параметр request текущей локали и способ ее хранения.

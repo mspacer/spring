@@ -12,7 +12,7 @@
 <div th:insert="~{fragment::header}"></div>
 <br>
 <form th:action="@{/users/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post" th:object="${user}">
-    <label for="username">Username:
+    <label for="username"><span th:text="#{login.username}">Username:</span>
         <input id="username" type="text" name="username" th:value="*{username}">
     </label><br>
     <label for="birthDate">BirthDate:

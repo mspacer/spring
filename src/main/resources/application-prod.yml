@@ -14,3 +14,5 @@ spring:
       name: test
       password: 123
       roles: "ADMIN"
+  messages:
+    basename: messages

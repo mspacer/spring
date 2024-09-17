@@ -31,7 +31,7 @@
 </form>
 
 <div th:each="user : ${users.content}">
-    <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.username}|">User</a>
+    <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.username}|"><span th:text="#{login.username}">Username:</span></a>
 </div>
 </body>
 </html>
