@@ -17,7 +17,10 @@ public class TransactionBeanPostProcessors implements BeanPostProcessor {
         if (bean.getClass().isAnnotationPresent(Transaction.class)) {
             //CompanyRepository.class превращается в какой-то $ProxyXX.class и
             // доступ по имени или типу "com.msp.spring.database.repository.CompanyRepository" больше не работает
-            // Поэтому в этом случае на этапе Initializing callbacks жизненного цикла не будет вызова метода CompanyRepository.init() помеченного @PostConstruct
+            // Поэтому в этом случае на этапе Initializing callbacks жизненного цикла не будет вызова метода
+            // CompanyRepository.init() помеченного @PostConstruct
+            // postProcessBeforeInitialization работает ДО этапа инициализации, а proxy создается на основе
+            // интерфейса и о аннотациях методов класса ничего не знает
             // Таким образом, создание прокси объекта должно быть в методе postProcessAfterInitialization
             return Proxy.newProxyInstance(bean.getClass().getClassLoader(), bean.getClass().getInterfaces(),
                     (proxy, method, args) ->  {

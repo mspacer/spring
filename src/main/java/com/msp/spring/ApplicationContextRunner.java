@@ -1,11 +1,16 @@
 package com.msp.spring;
 
 import com.msp.spring.bfpp.LogBeanFactoryPostProcessor;
+import com.msp.spring.bpp.example1.Parent;
+import com.msp.spring.bpp.example1.Son;
 import com.msp.spring.database.pool.ConnectionPool;
 import com.msp.spring.database.repository.CompanyRepository;
 import com.msp.spring.database.repository.CrudRepository;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * <p>
@@ -46,6 +51,16 @@ public class ApplicationContextRunner {
         // используется базовый интерфейс
         CrudRepository companyRepository = context.getBean("companyRepository", CrudRepository.class);
         System.out.println(companyRepository.findById(11));
+
+        /*
+        На самом деле бина Parent нет, т.к. в xml он не конфигурится
+         По имени интерфейса возвращается Son
+         */
+        Parent parent = context.getBean(Parent.class);
+        System.out.println("parent exisis " + parent);
+
+        Son son = context.getBean("son", Son.class);
+        System.out.println("son exisis " + son);
 
         context.close();
     }

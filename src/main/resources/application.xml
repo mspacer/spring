@@ -84,4 +84,6 @@
 
         <bean name="companyRepository" class="com.msp.spring.database.repository.CompanyRepository"/>
 
+        <bean name="son" class="com.msp.spring.bpp.example1.Son"/>
+
 </beans>
