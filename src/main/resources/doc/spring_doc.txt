@@ -136,6 +136,7 @@ AnnotationScopeMetadataResolver ищет аннотацию Scope.
     spring.profiles.active=web,prod
 второй вариант через контекст
     context.getEnvironment().setActiveProfiles("web", "prod")
+https://www.baeldung.com/spring-profiles
 
 8. Listeners
 Предствляет собой реализацию шаблона Слушатель событий
@@ -257,6 +258,8 @@ Hibernate не предоставляет слоя Repository, т.е. DAO реа
     final org.hibernate.engine.spi.PersistenceContext pc = session.getPersistenceContext();
 
 15. Трансакции
+https://habr.com/ru/articles/532000/
+https://habr.com/ru/companies/otus/articles/431508/
 
 В тестах обработчик транзакций TransactionalTestExecutionListener из starter-test.
 По умольчанию после выполниеня транзакционного метода, происходит Rollback. Для сохранения изменений на методе(классе)
@@ -270,6 +273,33 @@ Hibernate не предоставляет слоя Repository, т.е. DAO реа
 Классы, помеченные @Transactional, являются прокси-слассами, созданными cjlib
 
 В случае Propagation.REQUIRES_NEW открывается новая сессия и соединение с БД
+
+Open Session In View (OSIV)
+https://habr.com/ru/articles/440734/
+
+За транзакции в тестах отвечает TransactionalTestExecutionListener
+перед каждым тестом в beforeTestMethod создается новая транзакция
+Если в тестирумом трансакционном методе возникает исключительная ситуация,
+трансакция тестового метода помечается как rollback, и все изменения откатываются
+даже если исключение кетчется.
+     Participating transaction failed - marking existing transaction as rollback-only
+Новая трансакция в тестируемом методе не создается и выполняется в рамках трансакции теста.
+Варианты решения.
+1) Открывать новую трансакцию в тестируемом методе
+	@Transactional(propagation = REQUIRES_NEW)
+	не вариант, т.к. в реальной эксплуатации это может быть недопустимо.
+	Как и вносить изменения в основной код ради тестов
+2) Не откатывать трансакцию в случае эксепшена. Также помечается трансакция тестируемого метода.
+	Недостатки что и в 1)
+	@Transactional(noRollbackFor = Exception.class)
+3) Тестах создать JpaTransactionManager и изменить параметр globalRollbackOnParticipationFailure = false
+	 JpaTransactionManager jpaTransactionManager = new JpaTransactionManager(entityManagerFactory());
+     jpaTransactionManager.setGlobalRollbackOnParticipationFailure(false);
+В этом случае не вызывается ролбек, т.к. транскация тестируемого метода не новая,
+а родительская транзакция не помечается как rollback-only (вызов doSetRollbackOnly())
+Метод AbstractPlatformTransactionManager.processRollback
+
+https://dev.to/kirekov/spring-never-rollback-readonly-transactions-28kb
 
 16. Repository
 
@@ -479,6 +509,8 @@ https://hibernate.org/validator/documentation/
 https://beanvalidation.org/2.0/
 https://reflectoring.io/bean-validation-with-spring-boot/
 https://www.baeldung.com/spring-mvc-custom-validator
+Валидация Enum
+https://www.baeldung.com/javax-validations-enums
 
 Например, реализация @Email в org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 ValidatorImpl точка входа в валдацию

@@ -116,7 +116,9 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/multi", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Object create(@RequestPart(value = "model") UserCreateEditDto user, Errors errors, @RequestPart(value = "files", required = false) MultipartFile[] files) {
+    public Object create(@RequestPart(value = "model") UserCreateEditDto user,
+                         Errors errors,
+                         @RequestPart(value = "files", required = false) MultipartFile[] files) {
 
         Set<ConstraintViolation<UserCreateEditDto>> violations = validator2.validate(user, FirstOrder.class, SecondOrder.class, CreationAction.class, Default.class);
         if (!violations.isEmpty()) {
