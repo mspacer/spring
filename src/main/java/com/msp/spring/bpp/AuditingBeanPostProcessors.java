@@ -24,12 +24,17 @@ public class AuditingBeanPostProcessors implements BeanPostProcessor {
         // bean уже является прокси после TransactionBeanPostProcessors
         Class<?> originalClass = auditingBeans.get(beanName);
 
-        if (originalClass != null) {
+        if (bean.getClass().isAnnotationPresent(Auditing.class)) {
+        //if (originalClass != null) {
             return Proxy.newProxyInstance(originalClass.getClassLoader(), originalClass.getInterfaces(),
                     (proxy, method, args) ->  {
+                        if ("toString".equals(method.getName())) {
+                            return method.invoke(bean, args);
+                        }
                         long nanoTime = System.nanoTime();
                         try {
-                            System.out.println("Start auditing: " + nanoTime);
+                            System.out.println("Start auditing: " + nanoTime +
+                            " bean: " + bean + " beanName: " + beanName + ", method: " + method.getName());
                             return method.invoke(bean, args);
                         } finally {
                             System.out.println("Stop auditing: " + (System.nanoTime() - nanoTime));

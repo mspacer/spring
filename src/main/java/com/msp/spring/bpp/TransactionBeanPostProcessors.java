@@ -50,11 +50,17 @@ public class TransactionBeanPostProcessors implements BeanPostProcessor {
 
         Class<?> originalClass = transactionsBeans.get(beanName);
 
-        if (originalClass != null /*bean.getClass().isAnnotationPresent(Transaction.class)*/) {
+        if (bean.getClass().isAnnotationPresent(Transaction.class)) {
+        //if (originalClass != null ) {
             return Proxy.newProxyInstance(originalClass.getClassLoader(), originalClass.getInterfaces(),
                     (proxy, method, args) ->  {
+                        if ("toString".equals(method.getName())) {
+                            return method.invoke(bean, args);
+                        }
+
                         try {
-                            System.out.println("Open transaction");
+                            System.out.println("Open transaction- bean: " + bean + " beanName: " + beanName + ", method: " + method.getName());
+
                             return method.invoke(bean, args);
                         } finally {
                             System.out.println("Close transaction");

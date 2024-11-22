@@ -7,6 +7,7 @@ import com.msp.spring.database.pool.ConnectionPool;
 import com.msp.spring.database.repository.CompanyRepository;
 import com.msp.spring.database.repository.CrudRepository;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
