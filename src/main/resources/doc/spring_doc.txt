@@ -755,3 +755,9 @@ interceptorsAndDynamicMethodMatchers - список интерцепторов. 
 для метода UserService.findById, помимо addLogging() advice-интерсептора (MethodBeforeAdviceInterceptor), будет
  - TransactionInterceptor, т.к. сервис помечен аннотацией Trancactonal (аналог advice aspect)
  - AuthorizationManagerBeforeMethodInterceptor, т.к. метод помечен аннотацией PreAuthorize
+
+Аспекты внедряются ПЕРЕД фазой AfterInitialization Bean Post Processors.
+Поэтому, если есть аспект, в метод postProcessAfterInitialization уже приходит Proxy-класс
+Поэтому, возникает такая же проблема, как если на один класс различными BPP налагается дополнительная функциональность -
+в следующий BPP приходит прокси и нужно иметь оригинальный класс.
+Поэтому для решения используется HashMap, в который в postProcessBeforeInitialization сохраняется оригиналный класс.
