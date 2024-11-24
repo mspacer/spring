@@ -3,95 +3,109 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-4.0.xsd
                            http://www.springframework.org/schema/aop
-                           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+                           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-        <context:annotation-config/>
-        <!-- Enable AspectJ style of Spring AOP -->
-        <aop:aspectj-autoproxy />
+    <!--context:annotation-config/-->
+    <context:component-scan base-package="com.msp.spring" />
 
+    <!-- Enable AspectJ style of Spring AOP -->
+    <aop:aspectj-autoproxy/>
+    <tx:annotation-driven/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
     <!--
             bean post processors
             обрабатывает аннотации @PreDestroy, @PostConstruct (initialize callbacks), @Resource
             <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
     -->
 
-        <!-- создает бин PropertySourcesPlaceholderConfigurer-->
-        <context:property-placeholder location="application.properties"/>
-<!--
-        <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-                <property name="locations" value="application.properties"/>
-        </bean>
--->
-        <!-- bean factory post processors - реализуют BeanFactoryPostProcessor
-        (отличаются от bean post processors, которые реализуют BeanPostProcessor) -->
-        <bean class="com.msp.spring.bfpp.LogBeanFactoryPostProcessor"/>
-        <bean class="com.msp.spring.bfpp.VerifyPropertyBeanFactoryPostProcessor"/>
+    <!-- создает бин PropertySourcesPlaceholderConfigurer-->
+    <context:property-placeholder location="application.properties"/>
+    <!--
+            <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+                    <property name="locations" value="application.properties"/>
+            </bean>
+    -->
+    <!-- bean factory post processors - реализуют BeanFactoryPostProcessor
+    (отличаются от bean post processors, которые реализуют BeanPostProcessor) -->
+    <bean class="com.msp.spring.bfpp.LogBeanFactoryPostProcessor"/>
+    <bean class="com.msp.spring.bfpp.VerifyPropertyBeanFactoryPostProcessor"/>
 
-         <!-- bean post processors - реализуют BeanPostProcessor -->
-        <bean class="com.msp.spring.bpp.InjectBeanPostProcessor"/>
-        <bean class="com.msp.spring.bpp.TransactionBeanPostProcessors"/>
-        <bean class="com.msp.spring.bpp.AuditingBeanPostProcessors"/>
+    <!-- bean post processors - реализуют BeanPostProcessor -->
+    <bean class="com.msp.spring.bpp.InjectBeanPostProcessor"/>
+    <bean class="com.msp.spring.bpp.TransactionBeanPostProcessors"/>
+    <bean class="com.msp.spring.bpp.AuditingBeanPostProcessors"/>
 
-        <!-- Для доступа к property используется expression language (EL) ${},
-         которые как и SpEL обрабатывает PropertySourcesPlaceholderConfigurer (как наследник BeanFactoryPostProcessor)
-         в методе postProcessBeanFactory -->
-        <bean id="driver" class="java.lang.String">
-                <constructor-arg value="${db.driver}" type="java.lang.String" /> <!-- type - тип вызываемого конструктора-->
-        </bean>
+    <!-- Для доступа к property используется expression language (EL) ${},
+     которые как и SpEL обрабатывает PropertySourcesPlaceholderConfigurer (как наследник BeanFactoryPostProcessor)
+     в методе postProcessBeanFactory -->
+    <bean id="driver" class="java.lang.String">
+        <constructor-arg value="${db.driver}" type="java.lang.String"/> <!-- type - тип вызываемого конструктора-->
+    </bean>
 
-<!--
-        <bean name="pool, pool1" class="com.msp.spring.database.pool.ConnectionPool"/>
--->
+    <!--
+            <bean name="pool, pool1" class="com.msp.spring.database.pool.ConnectionPool"/>
+    -->
 
-        <bean id="pool2" class="com.msp.spring.database.pool.ConnectionPool" scope="singleton">
-              <!--init-method="init"
-              destroy-method="destroyMethod"-->
-                <!-- по-умолчанию scope = singleton хранится в контексте. prototype - каждый вызов порождает новый экземпляр. в контексте не хранится  -->
-                <constructor-arg index="0" value ="${db.username}"/> <!-- index - позиция в конструкторе -->
-                <constructor-arg name="poolSize" value="${db.pool.size}"/>
-                <constructor-arg>
-                        <list>
-                                <value>list arg 1</value>
-                                <value>list arg 2</value>
-                                <ref bean="driver"/>
-                        </list>
-                </constructor-arg>
-                <constructor-arg>
-                        <null></null>
-                        <!--<map>
-                               <entry key="key1" value="val 1"/>
-                               <entry key="key2" value="val 2"/>
-                               <entry key="key3" value-ref="driver"/>
-                        </map>-->
-                </constructor-arg>
-<!-- SpEL - spring expression language
-#{}
--->
-                <property name="properties"> <!-- установка значения чере set-метод -->
-                        <map>
-                                <entry key="key1" value="val 1"/>
-                                <entry key="key2" value="val 2"/>
-                                <entry key="key3" value="#{driver.toUpperCase() + ' - ' + '${db.url}'}"/>
-                                <entry key="hosts" value="#{'${db.hosts}'.split(',')}"/>
-                                <entry key="currentUser" value="#{systemProperties['user.name']}"/>
-                                <entry key="currentUser1" value="${user.name}"/>
-                        </map>
-                </property>
-        </bean>
+    <bean id="pool2" class="com.msp.spring.database.pool.ConnectionPool" scope="singleton">
+        <!--init-method="init"
+        destroy-method="destroyMethod"-->
+        <!-- по-умолчанию scope = singleton хранится в контексте. prototype - каждый вызов порождает новый экземпляр. в контексте не хранится  -->
+        <constructor-arg index="0" value="${db.username}"/> <!-- index - позиция в конструкторе -->
+        <constructor-arg name="poolSize" value="${db.pool.size}"/>
+        <constructor-arg>
+            <list>
+                <value>list arg 1</value>
+                <value>list arg 2</value>
+                <ref bean="driver"/>
+            </list>
+        </constructor-arg>
+        <constructor-arg>
+            <null></null>
+            <!--<map>
+                   <entry key="key1" value="val 1"/>
+                   <entry key="key2" value="val 2"/>
+                   <entry key="key3" value-ref="driver"/>
+            </map>-->
+        </constructor-arg>
+        <!-- SpEL - spring expression language
+        #{}
+        -->
+        <property name="properties"> <!-- установка значения чере set-метод -->
+            <map>
+                <entry key="key1" value="val 1"/>
+                <entry key="key2" value="val 2"/>
+                <entry key="key3" value="#{driver.toUpperCase() + ' - ' + '${db.url}'}"/>
+                <entry key="hosts" value="#{'${db.hosts}'.split(',')}"/>
+                <entry key="currentUser" value="#{systemProperties['user.name']}"/>
+                <entry key="currentUser1" value="${user.name}"/>
+            </map>
+        </property>
+    </bean>
 
-        <bean name="userRepository" class="com.msp.spring.database.repository.UserRepository">
-                <constructor-arg ref="pool2"/>
-        </bean>
+    <bean name="userRepository" class="com.msp.spring.database.repository.UserRepository">
+        <constructor-arg ref="pool2"/>
+    </bean>
 
-        <bean name="companyRepository" class="com.msp.spring.database.repository.CompanyRepository"/>
+    <bean name="companyRepository" class="com.msp.spring.database.repository.CompanyRepository"/>
 
-        <bean name="son" class="com.msp.spring.bpp.example1.Son"/>
-
-    <bean name="companyAspect" class="com.msp.spring.aop.CompanyAspect" />
+    <bean name="son" class="com.msp.spring.bpp.example1.Son"/>
 
 </beans>

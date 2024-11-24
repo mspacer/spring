@@ -26,7 +26,7 @@ public class ApplicationContextRunner {
     public static void main(String[] args) {
         // информация о бинах в context->beanFactory->beanDefinitionMap (singletonObjects)
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("application.xml");
-
+        System.out.println("\n --------CONTEXT CREATED-------- \n");
         /* бины можно получать по базовому классу или интерфейсу
         Ошибка    available: expected single matching bean but found 3:
         поскольку объявлено три бина с таким интерфейсом
@@ -62,6 +62,7 @@ public class ApplicationContextRunner {
 
         Son son = context.getBean("son", Son.class);
         System.out.println("son exisis " + son);
+        son.doRequest();
 
         context.close();
     }
