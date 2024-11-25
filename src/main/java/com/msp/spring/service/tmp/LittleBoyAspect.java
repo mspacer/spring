@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LittleBoyAspect {
 
-    @After("execution(* com.msp.spring.service.tmp.*.*(..))")
+    @After("execution(* com.msp.spring.service.tmp.IHateInterfaces.*(..))")
     public void whyInterfaces() {
         System.out.println("proxy works without interface");
     }
